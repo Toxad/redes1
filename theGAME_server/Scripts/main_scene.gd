@@ -15,10 +15,11 @@ func _process(delta):
 		if(recev != null):
 			print("Received something")
 			if(recev[0] == 10):
-				print(str("Usuario: ", recev[1],"; Mensagem: ", recev[2]))
+				global_obj.send(15,recev[3])									#"ack" para cliente
 				peers_numb = peers_numb + 1
-				self.get_node("PeersNumber").set_text(str(peers_numb))
-				global_obj.send([15, "HELLOOOO"], recev[3])
+				self.get_node("PeersNumber").set_text(str(peers_numb))			#atualiza numero de usuarios
+				self.get_node("ListPanel/List").add_text(recev[1])				#adiciona nome de usuário à lista
+				self.get_node("ListPanel/List").newline()
 		else:
 			return
 	else:
