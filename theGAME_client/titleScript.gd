@@ -36,12 +36,15 @@ func _process(delta):
 				var recev = global_obj.receive_packet()
 				if(recev == null):
 					return
-				self.stop("Connected")
+				if(recev[0] == 15):
+					self.stop("Connected")
+				else:
+					return
 			else:
 				self.stop("A Problem occured")
 	else:
 		already_started = true
-		global_obj.send([10,"Usuario", "Mensagem"])
+		global_obj.send([10,"Usuario", "Mensagem", "localhost"])
 
 func update_label():
 	var text = self.get_node("Label").get_text()
