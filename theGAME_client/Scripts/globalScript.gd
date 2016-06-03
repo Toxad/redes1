@@ -2,30 +2,31 @@ extends Node
 
 var udp = PacketPeerUDP.new()
 
+var listen_port = 1512
+
+const remote_host = "111.111.111.111"
+
+const remote_port = 1412
+
 func _ready():
-	#self.set_process(true)
 	pass
-	
-#func _process(delta):
-	
-func start_connection(host_port, remote_ip, remote_port):
-	var err = udp.listen(get_node("listen_port").get_val())
-	if (err != OK):
-		get_node("status").set_text("Error:\nCan't listen.")
-		get_node("connect").set_pressed(false)
-	else:
-		get_node("status").set_text("Connected.")
-		get_node("connect").set_text("Disconnect")
-		err = udp.set_send_address(get_node("remote_host").get_text(),get_node("remote_port").get_val())
-		if (err != OK):
-			get_node("status").set_text("Error:\nCan't resolve.")
-			get_node("connect").set_pressed(false)
-		else:
-			send_message("* " + get_node("user_name").get_text() + " entered chat.")
+
+func start_connection():
+	var err = udp.listen(listen_port)
+	if (err == OK):
+		err = udp.set_send_address(remote_host, remote_port)
+		
 	
 func close_connection():
 	udp.close()
 	
-func receive():
+func receive_packet():
 	var packet = udp.get_var()
 	return packet
+	
+func listening():
+	return udp.is_listening()
+	
+func send(msg):
+	if (udp.is_listening()):
+		udp.put_var(msg)
