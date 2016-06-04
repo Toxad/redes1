@@ -26,7 +26,6 @@ func _input(event):
 func require_server():
 	var name = self.get_node("Panel/VBoxContainer/HBoxContainer/NameLineEdit").get_text()
 	if(not name.empty()):
-		print("Entrou no loop")
 		global_obj.set_player_name(name)
 		global_obj.start_connection()
 		self.get_node("Panel").hide()
@@ -64,7 +63,7 @@ func _process(delta):
 	#	#already_started = true
 	#	global_obj.send(10)
 	self.stop("Connected")
-	global_obj.changeScn2Menu()
+	global_obj.changeScene("res://menu_scene.scn")
 
 func update_label():
 	var text = self.get_node("Label").get_text()
