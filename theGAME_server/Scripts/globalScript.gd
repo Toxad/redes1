@@ -12,6 +12,10 @@ func _ready():
 func start_connection():
 	var err = udp.listen(listen_port)
 
+func pack_ip():
+	var got_ip = udp.get_packet_ip()
+	return got_ip
+
 func close_connection():
 	udp.close()
 
