@@ -10,6 +10,8 @@ const remote_port = 1412
 
 var playerName = ""
 
+var currentScene = null
+
 func set_player_name(name):
 	self.playerName = name
 
@@ -17,8 +19,14 @@ func get_player_name():
 	return self.playerName
 
 func _ready():
-	pass
+	currentScene = get_tree().get_root().get_child(get_tree().get_root().get_child_count() -1)
 
+
+func changeScene(local):
+	currentScene.queue_free()
+	var s = ResourceLoader.load(local)
+	currentScene = s.instance()
+	get_tree().get_root().add_child(currentScene)
 
 func start_connection():
 	print("Started Connection")
@@ -37,8 +45,8 @@ func receive_packet():
 func listening():
 	return udp.is_listening()
 
-func send(code):
+func send(code, msg):
 	if (udp.is_listening()):
-		var msg = [code, self.playerName, "Message", IP.resolve_hostname("localhost")]
+		var msg = [code, self.playerName, msg, IP.get_local_addresses()[1]]
 		print(str("Sent ",msg))
 		udp.put_var(msg)

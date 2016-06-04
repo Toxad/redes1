@@ -2,10 +2,10 @@
 extends Sprite
 
 # numero de vezes que a conexão tentou com o servidor
-var tries = 0 
+var tries = 0
 
 # existe uma conexão pendente
-var already_started = false 
+var already_started = false
 
 # tempo ocorrido desde o inicio da conexão
 var time = 0
@@ -40,29 +40,31 @@ func require_server():
 
 # função que irá tentar conectar ao servidor um numero maximo de vezes (3) e, caso não conseguir, fechará o jogo
 func _process(delta):
-	if(already_started):
-		time = time + delta
-		if(time > 5):
-			if(tries < 30):
-				tries = tries + 1
-				time = 0
-				already_started = false
-			else:
-				self.stop("It was not possible to connect")
-		else:
-			if(global_obj.listening()):
-				var recev = global_obj.receive_packet()
-				if(recev == null):
-					return
-				if(recev and recev == 15):
-					self.stop("Connected")
-				else:
-					print("ERROR: Bad ACK: ", recev)
-			else:
-				self.stop("A Problem occured")
-	else:
-		already_started = true
-		global_obj.send(10)
+	#if(already_started):
+	#	time = time + delta
+	#	if(time > 5):
+	#		if(tries < 30):
+	#			tries = tries + 1
+	#			time = 0
+	#			already_started = false
+	#		else:
+	#			self.stop("It was not possible to connect")
+	#	else:
+	#		if(global_obj.listening()):
+	#			var recev = global_obj.receive_packet()
+	#			if(recev == null):
+	#				return
+	#			if(recev and recev == 15):
+	#				self.stop("Connected")
+	#			else:
+	#				print("ERROR: Bad ACK: ", recev)
+	#		else:
+	#			self.stop("A Problem occured")
+	#else:
+	#	#already_started = true
+	#	global_obj.send(10)
+	self.stop("Connected")
+	global_obj.changeScn2Menu()
 
 func update_label():
 	var text = self.get_node("Label").get_text()
@@ -75,9 +77,9 @@ func _on_Timer_timeout():
 	update_label()
 
 func stop(text):
-	self.get_node("Label").set_text(text)
 	self.get_node("Label/Timer").stop()
 	self.set_process(false)
+	self.get_node("Label").set_text(text)
 
 func _on_Button_pressed():
 	require_server()
