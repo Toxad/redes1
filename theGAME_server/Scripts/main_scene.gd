@@ -33,5 +33,3 @@ func _process(delta):
 	else:
 		print("Listening now...")
 		global_obj.start_connection()
-		
-		
