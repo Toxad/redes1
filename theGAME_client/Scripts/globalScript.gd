@@ -19,7 +19,7 @@ func get_player_name():
 	return self.playerName
 
 func _ready():
-	currentScene = get_tree().get_root().get_child(get_tree().get_root().get_child_count() -1)
+	currentScene = get_tree().get_root().get_child(get_tree().get_root().get_child_count() - 1)
 
 
 func changeScene(local):
