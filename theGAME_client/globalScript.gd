@@ -50,3 +50,4 @@ func send(code, msg):
 		var msg = [code, self.playerName, msg, IP.get_local_addresses()[1]]
 		print(str("Sent ",msg))
 		udp.put_var(msg)
+
