@@ -6,7 +6,7 @@ func _init():
 	self.set_target("enemy")
 	self.set_damage_type("magical")
 	self.set_mana_cost(70)
-	#self.set_icon("")
+	self.set_icon("res://Images/Fireball.tex")
 	
 func call(player):
 	var dmg = 1.2*(player.get_magi_atk())

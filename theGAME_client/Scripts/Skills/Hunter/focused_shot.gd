@@ -6,7 +6,7 @@ func _init():
 	self.set_target("enemy")
 	self.set_damage_type("physical")
 	self.set_mana_cost(50)
-	#self.set_icon("")
+	self.set_icon("res://Images/Focused_Shot.tex")
 	
 func call(player):
 	var dmg = 1.2*(player.get_phys_atk())

@@ -6,7 +6,7 @@ func _init():
 	self.set_target("enemy")
 	self.set_damage_type("physical")
 	self.set_mana_cost(150)
-	#self.set_icon("")
+	self.set_icon("res://Images/Double_Attack.tex")
 	
 func call(player):
 	var dmg = 2*(player.get_phys_atk())
