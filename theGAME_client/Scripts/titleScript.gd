@@ -56,7 +56,7 @@ func _process(delta):
 				var recev = global_obj.receive_packet()
 				if(recev == null):
 					return
-				if(recev and recev == 4):
+				if(recev[0] == 4):
 					stop("Connected")
 					change_scene = true
 					time = 0
@@ -67,7 +67,6 @@ func _process(delta):
 				self.set_process(false)
 	elif(change_scene):
 		time = time + delta
-		print(time)
 		if(time > 2):
 			global_obj.changeScene("res://Scenes/menu_scene.scn")
 	else:

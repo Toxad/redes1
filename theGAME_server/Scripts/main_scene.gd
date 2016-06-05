@@ -31,23 +31,27 @@ func _process(delta):
 				username = recev[1]
 				var unique = true
 				for user in users:
-					if(username == user[0] and address == user[1]):
-						unique = false
 					if(username == user[0]):
-						send(0, address, "Duplicated name")
+						unique = false
+					if(address == user[1]):
+						return
 				if(unique):
 					var obj = [username, address]
 					users.append(obj)
+					print(users)
 					peers_numb = peers_numb + 1
 					update()
+				else:
+					send(0, address, "Duplicated name")
 			# confirmação de que chegou mensagem de match; retira da lista os 2 se o que enviou estiver no topo
 			elif(recev[0] == 16):
 				print_packet(recev)
 				var user_a = users[0]
 				var user_b = users[1]
-				if(address == user_a[1] or address == user_b[1]):
+				if(address == user_a[1] or address == user_b[1] > users.size() > 2):
 					send(16, user_a[1], "Ok")
 					send(16, user_b[1], "Ok")
+					peers_numb = peers_numb - 2
 					users.remove(0)
 					users.remove(1)
 					update_list()
@@ -70,8 +74,10 @@ func _process(delta):
 func update():
 	get_node("PeersNumber").set_text(str(peers_numb))
 	list.clear()
-	for user in users:
-		list.add_text(str("\n", user[0]), "\t", user[1])
+	print(users.size())
+	for index in range(users.size()):
+		var user = users[index]
+		list.add_text(str("\n", user[0], "\t", user[1]))
 
 func print_packet(msg):
 	print(str(msg[0], ": ", msg[1], ": ", msg[2]))
