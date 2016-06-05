@@ -41,18 +41,18 @@ func dir_skills(path):
 func _ready():
 	global_obj = self.get_parent().get_node("/root/globalNode")
 	#self.set_process(true)
-	print(global_obj.get_player_name())
-	self.get_node("ConfirmPanel/PlayerName/Content").set_text(global_obj.get_player_name())		#Nome obtido do player
+	self.get_node("ConfirmPanel/ConfirmContainer/PlayerName/Content").set_text(global_obj.get_player_name())		#Nome obtido do player
 	self.get_node("SkillsPanel/Control/Skill1").set_toggle_mode(true)							#Habilita botoes
 	self.get_node("SkillsPanel/Control/Skill2").set_toggle_mode(true)
 	self.get_node("SkillsPanel/Control/Skill3").set_toggle_mode(true)
 	self.get_node("SkillsPanel/Control/Skill4").set_toggle_mode(true)
-	self.get_node("ConfirmPanel/PlayerSkills/SkillList").push_align(2)							#Align Right
+	self.get_node("ConfirmPanel/ConfirmContainer/PlayerSkills/SkillList").push_align(2)							#Align Right
 
 	
 func _process(delta):
 	time = time + delta
 	if(self.connect_status == ""):
+		
 		print("Started finding a match")
 		self.connect_status = "Finding Match"
 		global_obj.send(8, "Find Match")
@@ -109,37 +109,37 @@ func _on_InfoButton_pressed():
 
 func _on_BerserkerButton_pressed():
 	job = "Berserker"
-	self.get_node("ConfirmPanel/PlayerClass/Content").set_text(job)
+	self.get_node("ConfirmPanel/ConfirmContainer/PlayerClass/Content").set_text(job)
 	changePanel("AttributesPanel")
 	update_stats()
 
 func _on_HunterButton_pressed():
 	job = "Hunter"
-	self.get_node("ConfirmPanel/PlayerClass/Content").set_text(job)
+	self.get_node("ConfirmPanel/ConfirmContainer/PlayerClass/Content").set_text(job)
 	changePanel("AttributesPanel")
 	update_stats()
 
 func _on_KnightButton_pressed():
 	job = "Knight"
-	self.get_node("ConfirmPanel/PlayerClass/Content").set_text(job)
+	self.get_node("ConfirmPanel/ConfirmContainer/PlayerClass/Content").set_text(job)
 	changePanel("AttributesPanel")
 	update_stats()
 
 func _on_MageButton_pressed():
 	job = "Mage"
-	self.get_node("ConfirmPanel/PlayerClass/Content").set_text(job)
+	self.get_node("ConfirmPanel/ConfirmContainer/PlayerClass/Content").set_text(job)
 	changePanel("AttributesPanel")
 	update_stats()
 
 func _on_NecromancerButton_pressed():
 	job = "Necromancer"
-	self.get_node("ConfirmPanel/PlayerClass/Content").set_text(job)
+	self.get_node("ConfirmPanel/ConfirmContainer/PlayerClass/Content").set_text(job)
 	changePanel("AttributesPanel")
 	update_stats()
 
 func _on_RogueButton_pressed():
 	job = "Rogue"
-	self.get_node("ConfirmPanel/PlayerClass/Content").set_text(job)
+	self.get_node("ConfirmPanel/ConfirmContainer/PlayerClass/Content").set_text(job)
 	changePanel("AttributesPanel")
 	update_stats()
 
@@ -213,7 +213,7 @@ func _on_LukMinus_pressed():
 	update_stats()
 
 func _on_AttNextButton_pressed():
-	self.get_node("ConfirmPanel/PlayerAttributes/Content").set_text("STR: "+str(Str)+"\nAGI: "+str(Agi)+"\nINT: "+str(Int)+"\nLUK: "+str(Luk))
+	self.get_node("ConfirmPanel/ConfirmContainer/PlayerAttributes/Content").set_text("STR: "+str(Str)+"\nAGI: "+str(Agi)+"\nINT: "+str(Int)+"\nLUK: "+str(Luk))
 	self.get_node("SkillsPanel/SkillsDisplayClass").set_text(job)
 	var path = SKILL_PATH+job+"/"
 	dir_skills(path)											#Preenche botões de skill
@@ -231,7 +231,11 @@ func _on_SkillsBackButton_pressed():
 	selected_skills.clear()
 	self.reset_skill_buttons()
 	changePanel("AttributesPanel")
+
+func _on_Skill1_mouse_enter():
 	
+	pass # replace with function body
+
 	
 func _on_Skill1_toggled(pressed):
 	if(pressed):																	#botão toggles, adiciona skill do botão correspondente no dicionario 
@@ -267,7 +271,7 @@ func _on_Skill4_toggled(pressed):
 		
 func _on_SkillsNextButton_pressed():
 	for key in (selected_skills).keys():											#coloca skill selecionadas na relação da proxima tela
-		self.get_node("ConfirmPanel/PlayerSkills/SkillList").add_text(key+"\n")
+		self.get_node("ConfirmPanel/ConfirmContainer/PlayerSkills/SkillList").add_text(key+"\n")
 	changePanel("ConfirmPanel")
 
 ################################   CONFIRM
@@ -276,7 +280,7 @@ func _on_ConfirmBackButton_pressed():
 	selected_skills.clear()
 	self.reset_skill_buttons()
 	self.get_node("ConfirmPanel/PlayerSkills/SkillList").clear()
-	self.get_node("ConfirmPanel/PlayerSkills/SkillList").push_align(2)
+	self.get_node("ConfirmPanel/ConfirmContainer/PlayerSkills/SkillList").push_align(2)
 	var path = SKILL_PATH+job+"/"
 	dir_skills(path)
 	changePanel("SkillsPanel")
@@ -290,8 +294,8 @@ func _on_RestartButton_pressed():
 	job = null
 	selected_skills.clear()
 	button_skills.clear()
-	self.get_node("ConfirmPanel/PlayerSkills/SkillList").clear()
-	self.get_node("ConfirmPanel/PlayerSkills/SkillList").push_align(2)
+	self.get_node("ConfirmPanel/ConfirmContainer/PlayerSkills/SkillList").clear()
+	self.get_node("ConfirmPanel/ConfirmContainer/PlayerSkills/SkillList").push_align(2)
 	self.reset_skill_buttons()
 	changePanel("ClassPanel")
 
@@ -312,8 +316,11 @@ func reset_skill_buttons():
 
 
 func _on_ConfirmButton_pressed():
+	self.get_node("ConfirmPanel/ConfirmContainer").hide()
 	var all_skills = []
 	for key in (selected_skills).keys():
 		all_skills.append(selected_skills[key])
 	global_obj.set_player([Str, Agi, Int, Luk], all_skills, self.job)
 	self.set_process(true)
+
+
