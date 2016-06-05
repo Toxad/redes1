@@ -1,4 +1,3 @@
-
 extends Sprite
 
 # numero de vezes que a conexão tentou com o servidor

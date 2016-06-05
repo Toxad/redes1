@@ -1,14 +1,15 @@
 extends offensive_skills
 
 func _init():
-	self.set_jobs(["Knight"])
-	self.set_name("Honorable Vengeance")
+	self.set_jobs(["Hunter"])
+	self.set_name("Focused Shot")
 	self.set_target("enemy")
 	self.set_damage_type("physical")
-	self.set_mana_cost(70)
+	self.set_mana_cost(50)
 	#self.set_icon("")
 	
 func call(player):
-	var dmg = 1.3*(player.get_phys_atk())
+	var dmg = 1.2*(player.get_phys_atk())
 	self.set_damage(dmg)
-	self.set_hp_cost(hp_cost)
+	self.set_mana_cost(mana_cost)
+

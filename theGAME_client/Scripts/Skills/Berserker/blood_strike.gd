@@ -12,4 +12,4 @@ func call(player):
 	var dmg = (hp_cost)+player.get_phys_atk()				#15% do HP + atk físico
 	self.set_damage(dmg)
 	self.set_hp_cost(hp_cost)
-	
+
