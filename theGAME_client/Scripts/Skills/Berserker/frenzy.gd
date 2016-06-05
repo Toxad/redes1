@@ -8,7 +8,6 @@ func _init():
 
 
 func call(player):
-	
 	player.add_buff("res://Scripts/Skills/Berserker_buff/frenzy_buff.gd")
 	pass
 
