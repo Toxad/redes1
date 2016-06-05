@@ -3,10 +3,13 @@ extends Node
 var turn = 0
 var target = null
 
-#func _init(player, turns):
-#	self.turn = turns
-#	self.target = player
-#	self.begin()
+func _init():
+	pass
+
+func set_status(player, turns):
+	self.turn = turns
+	self.target = player
+	self.begin()
 
 func _ready():
 	pass
