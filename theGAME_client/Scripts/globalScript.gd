@@ -44,9 +44,22 @@ func receive_packet():
 func listening():
 	return udp.is_listening()
 
+# manda codigo com uma mensagem
 func send(code, msg):
 	if (udp.is_listening()):
-		var packet = [code, self.playerName, msg, IP.get_local_addresses()[1]]
+		udp.set_send_address(remote_host, remote_port)
+		var packet = [code, self.playerName, msg]
 		print(str("Sent ",packet))
 		udp.put_var(packet)
 
+# mensagem para o outro jogador quando você JA recebeu um pacote do servidor e espera a confirmação do outro
+func send_match(code, player, adv):
+	if(udp.is_listening()):
+		udp.set_send_address(player[1], listen_port)
+		var packet = [code, player[0], player[1], adv[0], adv[1]]
+
+func send_battle(code, target, damage, status, type):
+	pass
+
+func keep_alive(code, status):
+	pass
