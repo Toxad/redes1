@@ -3,10 +3,12 @@ extends Panel
 var currentPanel = null
 var job = null
 var global_obj
-var selected_skills = []
-var available_skills = []
+var selected_skills = {}
+var available_skills = {}
 var MAX_SKILLS = 4
 var SKILL_PATH = "res://Scripts/Skills/"
+
+var button_skills = []
 
 func changePanel(msg):
 	if(currentPanel != null):
@@ -24,17 +26,20 @@ func dir_skills(path):
 			if(file_name != "." and file_name != ".."):		#ignora arquivos "falsos" retornados pela função
 				file_name = file_name.split(".", false)		#separa nome do arquivo de sua extensão
 				var skill = self.get_parent().get_node("/root/"+file_name[0])
-				available_skills.append(skill)
+				available_skills[skill.get_name()] = skill	#coloca skill no dicionario de skills disponiveis
+				button_skills.append(skill)					#atribui skill a botão na ordem
 				self.get_node("SkillsPanel/Control/Skill"+str(i)+"/Sprite").set_texture(load(skill.get_icon()))
 				file_name = dir.get_next()
 				i += 1
 			else:
 				file_name = dir.get_next()
 
+
 			
 func _ready():
 	global_obj = self.get_parent().get_node("/root/globalNode")
 	self.set_process(true)
+	print(global_obj.get_player_name())
 	self.get_node("ConfirmPanel/PlayerName/Content").set_text(global_obj.get_player_name())		#Nome obtido do player
 	self.get_node("SkillsPanel/Control/Skill1").set_toggle_mode(true)							#Habilita botoes
 	self.get_node("SkillsPanel/Control/Skill2").set_toggle_mode(true)
@@ -141,7 +146,7 @@ func _on_AttNextButton_pressed():
 	self.get_node("ConfirmPanel/PlayerAttributes/Content").set_text("STR: "+str(Str)+"\nAGI: "+str(Agi)+"\nINT: "+str(Int)+"\nLUK: "+str(Luk))
 	self.get_node("SkillsPanel/SkillsDisplayClass").set_text(job)
 	var path = SKILL_PATH+job+"/"
-	dir_skills(path)
+	dir_skills(path)											#Preenche botões de skill
 	changePanel("SkillsPanel")
 	
 ################################   SKILLS
@@ -151,43 +156,48 @@ func _on_SkillsBackButton_pressed():
 	Agi = 0
 	Int = 0
 	Luk = 0
+	var path = SKILL_PATH+job+"/"
+	dir_skills(path)
+	selected_skills.clear()
+	self.reset_skill_buttons()
 	changePanel("AttributesPanel")
-
+	
+	
 func _on_Skill1_toggled(pressed):
 	if(pressed):
 		self.get_node("SkillsPanel/Control/Skill1/Sprite").set_self_opacity(0.5)
-		selected_skills.append(available_skills[0])
+		selected_skills[button_skills[0].get_name()] = button_skills[0] 
 	else:
 		self.get_node("SkillsPanel/Control/Skill1/Sprite").set_self_opacity(1)
-		selected_skills.remove(0)
+		selected_skills.erase(button_skills[0].get_name())
 		
 func _on_Skill2_toggled(pressed):
 	if(pressed):
 		self.get_node("SkillsPanel/Control/Skill2/Sprite").set_self_opacity(0.5)
-		selected_skills.append(available_skills[1])
+		selected_skills[button_skills[1].get_name()] = button_skills[1] 
 	else:
 		self.get_node("SkillsPanel/Control/Skill2/Sprite").set_self_opacity(1)
-		selected_skills.remove(1)
+		selected_skills.erase(button_skills[1].get_name())
 		
 func _on_Skill3_toggled(pressed):
 	if(pressed):
 		self.get_node("SkillsPanel/Control/Skill3/Sprite").set_self_opacity(0.5)
-		selected_skills.append(available_skills[2])
+		selected_skills[button_skills[2].get_name()] = button_skills[2] 
 	else:
 		self.get_node("SkillsPanel/Control/Skill3/Sprite").set_self_opacity(1)
-		selected_skills.remove(2)
+		selected_skills.erase(button_skills[2].get_name())
 		
 func _on_Skill4_toggled(pressed):
 	if(pressed):
 		self.get_node("SkillsPanel/Control/Skill4/Sprite").set_self_opacity(0.5)
-		selected_skills.append(available_skills[3])
+		selected_skills[button_skills[3].get_name()] = button_skills[3] 
 	else:
 		self.get_node("SkillsPanel/Control/Skill4/Sprite").set_self_opacity(1)
-		selected_skills.remove(3)
+		selected_skills.erase(button_skills[3].get_name())
 		
 func _on_SkillsNextButton_pressed():
-	for j in range((selected_skills).size()):
-		self.get_node("ConfirmPanel/PlayerSkills/SkillList").add_text(selected_skills[j].get_name()+"\n")
+	for key in (selected_skills).keys():
+		self.get_node("ConfirmPanel/PlayerSkills/SkillList").add_text(key+"\n")
 	changePanel("ConfirmPanel")
 
 ################################   CONFIRM
@@ -197,6 +207,8 @@ func _on_ConfirmBackButton_pressed():
 	self.reset_skill_buttons()
 	self.get_node("ConfirmPanel/PlayerSkills/SkillList").clear()
 	self.get_node("ConfirmPanel/PlayerSkills/SkillList").push_align(2)
+	var path = SKILL_PATH+job+"/"
+	dir_skills(path)
 	changePanel("SkillsPanel")
 
 
@@ -206,17 +218,22 @@ func _on_RestartButton_pressed():
 	Int = 0
 	Luk = 0
 	job = null
-	#zerar skills
-	self.get_node("SkillsPanel/Control/Skill1").set_pressed(false)
-	self.get_node("SkillsPanel/Control/Skill1/Sprite").set_self_opacity(1)
+	self.get_node("ConfirmPanel/PlayerSkills/SkillList").clear()
+	self.get_node("ConfirmPanel/PlayerSkills/SkillList").push_align(2)
+	self.reset_skill_buttons()
 	changePanel("ClassPanel")
 
 func reset_skill_buttons():
+	available_skills.clear()
+	self.get_node("SkillsPanel/Control/Skill1/Sprite").set_texture(null)
 	self.get_node("SkillsPanel/Control/Skill1/Sprite").set_self_opacity(1)
 	self.get_node("SkillsPanel/Control/Skill1").set_pressed(false)
+	self.get_node("SkillsPanel/Control/Skill2/Sprite").set_texture(null)
 	self.get_node("SkillsPanel/Control/Skill2/Sprite").set_self_opacity(1)
 	self.get_node("SkillsPanel/Control/Skill2").set_pressed(false)
+	self.get_node("SkillsPanel/Control/Skill3/Sprite").set_texture(null)
 	self.get_node("SkillsPanel/Control/Skill3/Sprite").set_self_opacity(1)
 	self.get_node("SkillsPanel/Control/Skill3").set_pressed(false)
+	self.get_node("SkillsPanel/Control/Skill4/Sprite").set_texture(null)
 	self.get_node("SkillsPanel/Control/Skill4/Sprite").set_self_opacity(1)
 	self.get_node("SkillsPanel/Control/Skill4").set_pressed(false)
