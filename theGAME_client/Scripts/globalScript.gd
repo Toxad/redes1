@@ -2,7 +2,7 @@ extends Node
 
 var udp = PacketPeerUDP.new()
 const listen_port = 1512
-const remote_host = "localhost"
+const remote_host = "192.168.0.73"
 const remote_port = 1412
 var playerName = ""
 var adversary_name = ""
