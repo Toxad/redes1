@@ -2,8 +2,6 @@ extends Node
 
 var udp = PacketPeerUDP.new()
 
-
-
 const listen_port = 1512
 
 const remote_host = "localhost"
@@ -22,8 +20,6 @@ func get_player_name():
 
 func _ready():
 	currentScene = get_tree().get_root().get_child(get_tree().get_root().get_child_count() - 1)
-#	var off = load("res://Scripts/Skills/offensive_skills.gd")
-#	var char = load("res://Scripts/player.gd").new()
 
 func changeScene(local):
 	currentScene.queue_free()

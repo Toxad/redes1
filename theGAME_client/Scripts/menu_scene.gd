@@ -15,3 +15,7 @@ func _on_InfoButton_pressed():
 func _on_ExitButton_pressed():
 	get_tree().quit()
 	pass # replace with function body
+
+
+func _on_NewMatchButton_pressed():
+	global_obj.changeScene("res://Scenes/create_char.scn")

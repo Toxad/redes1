@@ -1,5 +1,7 @@
 extends "res://Scripts/Skills/offensive_skills.gd"
 
+#const id 
+
 func _init():
 	self.set_jobs(["Berserker"])
 	self.set_name("Blood Strike")
