@@ -63,7 +63,7 @@ func _process(delta):
 	#	#already_started = true
 	#	global_obj.send(10)
 	self.stop("Connected")
-	global_obj.changeScene("res://menu_scene.scn")
+	global_obj.changeScene("res://Scenes/menu_scene.scn")
 
 func update_label():
 	var text = self.get_node("Label").get_text()
