@@ -13,3 +13,4 @@ func call(player):
 	self.set_damage(dmg)
 	self.set_mana_cost(mana_cost)
 
+	
