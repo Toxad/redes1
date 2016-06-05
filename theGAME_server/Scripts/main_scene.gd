@@ -51,8 +51,10 @@ func _process(delta):
 				time = 0
 				var user_a = users[0]
 				var user_b = users[1]
-				send_match(8, user_a[1], user_b)
-				send_match(8, user_b[1], user_a)
+				# manda pra user_a seu oponente e ele mesmo
+				send_match(8, user_a, user_b)
+				# manda pra user_b seu oponente e ele mesmo
+				send_match(8, user_b, user_a)
 			return
 	else:
 		print("Listening now...")
