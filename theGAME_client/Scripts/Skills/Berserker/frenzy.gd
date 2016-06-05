@@ -8,7 +8,7 @@ func _init():
 
 
 func call(player):
-	frenzy = ("res://Scripts/Skills/status/frenzy_buff.gd")
+	frenzy = ("res://Scripts/Status/frenzy_buff.gd")
 	frenzy.set_status(player, 4)
 	player.add_buff(frenzy)
 	pass
