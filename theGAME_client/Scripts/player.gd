@@ -68,14 +68,26 @@ func set_mana(mana):
 func get_strength():
 	return self.attributes_dict["str"]
 
+func set_strength(val):
+	self.attributes_dict["str"] = val
+
 func get_agility():
 	return self.attributes_dict["agi"]
+
+func set_agility():
+	self.attributes_dict["agi"] = val
 
 func get_intelligence():
 	return self.attributes_dict["int"]
 
+func set_intelligence():
+	self.attributes_dict["int"] = val
+
 func get_luck():
 	return self.attributes_dict["luk"]
+
+func set_luck():
+	self.attributes_dict["luk"] = val
 
 func pass_turn_status():
 	var to_remove = []
