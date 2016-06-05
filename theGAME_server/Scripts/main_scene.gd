@@ -27,24 +27,25 @@ func _process(delta):
 				global_obj.send(4, address, "Ok")
 			# finding match
 			elif(recev[0] == 8):
+				print("Novo usuario para finding match")
 				print_packet(recev)
 				username = recev[1]
 				var unique = true
 				for user in users:
 					if(username == user[0]):
 						unique = false
-					if(address == user[1]):
+					if(address == user[1] and not unique):
 						return
 				if(unique):
 					var obj = [username, address]
 					users.append(obj)
-					print(users)
 					peers_numb = peers_numb + 1
 					update()
 				else:
 					send(0, address, "Duplicated name")
 			# confirmação de que chegou mensagem de match; retira da lista os 2 se o que enviou estiver no topo
 			elif(recev[0] == 16):
+				print("Confirmação de usuario")
 				print_packet(recev)
 				var user_a = users[0]
 				var user_b = users[1]
@@ -58,14 +59,15 @@ func _process(delta):
 			else:
 				return
 		else:
-			if(users.size() > 1 && time > 0.5):
+			if(users.size() >= 2 and time > 0.5):
+				print("Mandando para 2 peers")
 				time = 0
 				var user_a = users[0]
 				var user_b = users[1]
 				# manda pra user_a seu oponente e ele mesmo
-				send_match(8, user_a, user_b)
+				global_obj.send_match(8, user_a, user_b)
 				# manda pra user_b seu oponente e ele mesmo
-				send_match(8, user_b, user_a)
+				global_obj.send_match(8, user_b, user_a)
 			return
 	else:
 		print("Listening now...")
@@ -73,11 +75,13 @@ func _process(delta):
 
 func update():
 	get_node("PeersNumber").set_text(str(peers_numb))
+	print(str("Users size: ", users.size()))
 	list.clear()
-	print(users.size())
+	print(str("Users: ", users)) 
 	for index in range(users.size()):
 		var user = users[index]
-		list.add_text(str("\n", user[0], "\t", user[1]))
+		list.add_text(str(index,":", user[0], ":", user[1]))
+		list.add_text("\n")
 
 func print_packet(msg):
 	print(str(msg[0], ": ", msg[1], ": ", msg[2]))

@@ -33,7 +33,7 @@ func send(code, addr, msg):
 func send_match(msg, player, adv):
 	if(udp.is_listening()):
 		udp.set_send_address(player[1], remote_port)
-		udp.put_var(msg, player[0], player[1], adv[0], adv[1])
+		udp.put_var([msg, player[0], player[1], adv[0], adv[1]])
 	pass
 
 # send(8, user_b[1], user_a)
