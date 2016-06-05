@@ -1,4 +1,4 @@
-extends skills
+extends "skills.gd"
 
 var damage_type
 var damage

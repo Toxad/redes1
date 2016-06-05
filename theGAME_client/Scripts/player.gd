@@ -45,7 +45,7 @@ func get_skills():
 	return self.skills_arr
 
 func use_skill(target, index):
-	var skill = skill_arr[index]
+	var skill = skills_arr[index]
 	if(isinstance(skill, offensive_skills)):
 		skill.call(self, target)
 	if(isinstance(skill, buff_skills)):
@@ -55,13 +55,13 @@ func attack(target):
 	target.take_damage()
 
 func take_phys_damage(dmg):
-	total = dmg - phys_def
+	var total = dmg - phys_def
 	if(total < 0):
 		total = 0
 	self.life = self.life - 0
 
 func take_magic_damage(dmg):
-	total = dmg - magic_def
+	var total = dmg - magic_def
 	if(total < 0):
 		total = 0
 	self.life = self.life - 0
@@ -87,19 +87,19 @@ func set_strength(val):
 func get_agility():
 	return self.attributes_dict["agi"]
 
-func set_agility():
+func set_agility(val):
 	self.attributes_dict["agi"] = val
 
 func get_intelligence():
 	return self.attributes_dict["int"]
 
-func set_intelligence():
+func set_intelligence(val):
 	self.attributes_dict["int"] = val
 
 func get_luck():
 	return self.attributes_dict["luk"]
 
-func set_luck():
+func set_luck(val):
 	self.attributes_dict["luk"] = val
 
 func get_phys_attack():

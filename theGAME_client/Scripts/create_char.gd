@@ -64,6 +64,10 @@ func _on_RogueButton_pressed():
 
 func _on_AttBackButton_pressed():
 	job = null
+	Str = 0
+	Agi = 0
+	Int = 0
+	Luk = 0
 	changePanel("ClassPanel")
 
 func _on_StrPlus_pressed():
@@ -99,8 +103,31 @@ func _on_LukMinus_pressed():
 		Luk -= 1
 
 func _on_next_pressed():
-	changePanel("SkillsPannel")
+	changePanel("SkillsPanel")
 
 
 func _on_SkillsBackButton_pressed():
+	Str = 0
+	Agi = 0
+	Int = 0
+	Luk = 0
 	changePanel("AttributesPanel")
+
+
+func _on_ConfirmBackButton_pressed():
+	changePanel("SkillsPanel")
+	#zerar skills
+
+
+func _on_RestartButton_pressed():
+	Str = 0
+	Agi = 0
+	Int = 0
+	Luk = 0
+	job = null
+	#zerar skills
+	changePanel("ClassPanel")
+
+
+func _on_SkillsNextButton_pressed():
+	changePanel("ConfirmPanel")

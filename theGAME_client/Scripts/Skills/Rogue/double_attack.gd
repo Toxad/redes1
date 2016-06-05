@@ -1,4 +1,4 @@
-extends offensive_skills
+extends "res://Scripts/Skills/offensive_skills.gd"
 
 func _init():
 	self.set_jobs(["Rogue"])

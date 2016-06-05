@@ -1,1 +1,1 @@
-extends skills
+extends "skills.gd"
