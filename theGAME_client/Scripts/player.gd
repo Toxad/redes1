@@ -6,6 +6,7 @@ var mana = 0
 var name = ""
 var magic_def = 0
 var phys_def = 0
+var job = ""
 
 var attributes_dict = {"str": 0, "agi": 0, "int": 0, "luk": 0}
 
@@ -16,7 +17,7 @@ var debuffs_arr = []
 func _ready():
 	pass
 
-func _init(name, attributes, skills):
+func _init(name, attributes, skills, job):
 	self.name = name
 	self.attributes_dict["str"] = attributes[0]
 	self.attributes_dict["agi"] = attributes[1]
@@ -27,6 +28,7 @@ func _init(name, attributes, skills):
 	self.phys_def = 10 - self.magic_def
 	self.life = 500
 	self.mana = 250
+	self.job = job
 
 func get_skills():
 	return self.skills_arr
