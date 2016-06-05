@@ -8,7 +8,7 @@ func _ready():
 	pass
 
 func _on_InfoButton_pressed():
-	global_obj.changeScene("res://info_scene.scn")
+	global_obj.changeScene("res://Scenes/info_scene.scn")
 	pass # replace with function body
 
 
