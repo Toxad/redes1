@@ -46,7 +46,7 @@ func listening():
 
 func send(code, msg):
 	if (udp.is_listening()):
-		var msg = [code, self.playerName, msg, IP.get_local_addresses()[1]]
-		print(str("Sent ",msg))
-		udp.put_var(msg)
+		var packet = [code, self.playerName, msg, IP.get_local_addresses()[1]]
+		print(str("Sent ",packet))
+		udp.put_var(packet)
 
