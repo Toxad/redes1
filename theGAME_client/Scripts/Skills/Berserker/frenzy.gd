@@ -8,7 +8,9 @@ func _init():
 
 
 func call(player):
-	player.add_buff("res://Scripts/Skills/Berserker_buff/frenzy_buff.gd")
+	frenzy = ("res://Scripts/Skills/status/frenzy_buff.gd")
+	frenzy.set_status(player, 4)
+	player.add_buff(frenzy)
 	pass
 
 func _ready():
