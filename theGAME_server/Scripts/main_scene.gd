@@ -33,7 +33,7 @@ func _process(delta):
 				users.append(obj)
 				peers_numb = peers_numb + 1
 				update()
-			# confirmação de que chegou mensagem de match
+			# confirmação de que chegou mensagem de match; retira da lista os 2 se o que enviou estiver no topo
 			elif(recev[0] == 16):
 				print_packet(recev)
 				var user_a = users[0]
@@ -47,7 +47,7 @@ func _process(delta):
 			else:
 				return
 		else:
-			if(users.size() > 1 && time > 1):
+			if(users.size() > 1 && time > 0.5):
 				time = 0
 				var user_a = users[0]
 				var user_b = users[1]

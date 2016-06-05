@@ -28,7 +28,7 @@ func listening():
 func send(msg, addr):
 	if (udp.is_listening()):
 		udp.set_send_address(addr, remote_port)
-		udp.put_var(msg)
+		udp.put_var([msg, "Ok"])
 
 func send_match(msg, player, adv):
 	if(udp.is_listening()):
