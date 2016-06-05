@@ -6,6 +6,7 @@ func _init():
 	self.set_target("enemy")
 	self.set_damage_type("physical")
 	self.set_icon("res://Images/Blood_Strike.tex")
+	self.set_info("Attacks enemy player with 100% of physical attack + 15% of HP value at the cost of the same amount of HP.\nHP Cost: 15% of total HP")
 
 func call(player):
 	var hp_cost = (player.get_max_life()/100)*15

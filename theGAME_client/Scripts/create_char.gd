@@ -236,10 +236,8 @@ func _on_SkillsBackButton_pressed():
 	self.reset_skill_buttons()
 	changePanel("AttributesPanel")
 
-func _on_Skill1_mouse_enter():
-	pass # replace with function body
 
-	
+####BOTAO 1####
 func _on_Skill1_toggled(pressed):
 	if(pressed):																	#botão toggles, adiciona skill do botão correspondente no dicionario 
 		self.get_node("SkillsPanel/Control/Skill1/Sprite").set_self_opacity(0.5)
@@ -248,6 +246,14 @@ func _on_Skill1_toggled(pressed):
 		self.get_node("SkillsPanel/Control/Skill1/Sprite").set_self_opacity(1)		#retira do dicionario
 		selected_skills.erase(button_skills[0].get_name())
 		
+func _on_Skill1_mouse_enter():
+	get_node("SkillsPanel/Control/Skill1/Tooltip/SkillInfo1").set_text(button_skills[0].get_info())
+	get_node("SkillsPanel/Control/Skill1/Tooltip").show()
+
+func _on_Skill1_mouse_exit():
+	get_node("SkillsPanel/Control/Skill1/Tooltip").hide()
+
+####BOTAO 2####
 func _on_Skill2_toggled(pressed):
 	if(pressed):
 		self.get_node("SkillsPanel/Control/Skill2/Sprite").set_self_opacity(0.5)
@@ -255,7 +261,15 @@ func _on_Skill2_toggled(pressed):
 	else:
 		self.get_node("SkillsPanel/Control/Skill2/Sprite").set_self_opacity(1)
 		selected_skills.erase(button_skills[1].get_name())
-		
+
+func _on_Skill2_mouse_enter():
+	get_node("SkillsPanel/Control/Skill2/Tooltip/SkillInfo2").set_text(button_skills[1].get_info())
+	get_node("SkillsPanel/Control/Skill2/Tooltip").show()
+
+func _on_Skill2_mouse_exit():
+	get_node("SkillsPanel/Control/Skill2/Tooltip").hide()
+
+####BOTAO 3####
 func _on_Skill3_toggled(pressed):
 	if(pressed):
 		self.get_node("SkillsPanel/Control/Skill3/Sprite").set_self_opacity(0.5)
@@ -263,7 +277,8 @@ func _on_Skill3_toggled(pressed):
 	else:
 		self.get_node("SkillsPanel/Control/Skill3/Sprite").set_self_opacity(1)
 		selected_skills.erase(button_skills[2].get_name())
-		
+
+####BOTAO 4####
 func _on_Skill4_toggled(pressed):
 	if(pressed):
 		self.get_node("SkillsPanel/Control/Skill4/Sprite").set_self_opacity(0.5)
@@ -337,3 +352,4 @@ func _on_CancelButton_pressed():
 	
 
 	
+

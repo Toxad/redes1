@@ -6,6 +6,7 @@ var target
 var icon
 var mana_cost = 0
 var hp_cost = 0
+var info
 
 func set_name(name):
 	self.name = name
@@ -40,8 +41,12 @@ func get_mana_cost():
 func set_hp_cost(hp):
 	self.hp_cost = hp
 
-func get_hp_cost(hp):
+func get_hp_cost():
 	return self.hp_cost
-	
 
+func set_info(info):
+	self.info = info
+
+func get_info():
+	return self.info
 
