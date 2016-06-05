@@ -1,7 +1,7 @@
 extends Panel
 
 var global_obj
-
+var tries = 0
 var peers_numb = 0
 var users = [] # armazenamento de usuarios
 var username
@@ -59,7 +59,14 @@ func _process(delta):
 			else:
 				return
 		else:
-			if(users.size() >= 2 and time > 0.5):
+			if(users.size() >= 2 and time > 1):
+				if(tries > 5):
+					tries = 0
+					peers_numb = peers_numb - 2
+					users.remove(0)
+					users.remove(1)
+					return
+				tries = tries + 1
 				print("Mandando para 2 peers")
 				time = 0
 				var user_a = users[0]
