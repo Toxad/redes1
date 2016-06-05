@@ -74,7 +74,8 @@ func _process(delta):
 			elif(packet[0] == 16):
 				# recebeu de adversario; adversario no pacote; send para adversario
 				self.connect_status = "Ready"
-				if(global_obj.get_adversary == null):
+				print("Chegou em estado: ready")
+				if(global_obj.get_adversary() == null):
 					var ip = global_obj.pack_ip()
 					global_obj.set_adversary(packet[1], ip)
 				#print(self.connect_status)
@@ -82,7 +83,6 @@ func _process(delta):
 				time = 0
 		else:
 			var adversary = global_obj.get_adversary()
-			print(str("Adversary: ", adversary))
 			if(connect_status == "Finding Match"):
 				# remanda em caso de perda
 				if(time > 5):
@@ -96,6 +96,7 @@ func _process(delta):
 					time = 0
 			elif(connect_status == "Ready"):
 				if(time > 1):
+					print("Mandou um 16 para o adversario")
 					global_obj.send_match(16, adversary)
 					print("Fim! Muda de cena")
 					global_obj.changeScene("res://Scenes/battle_scene.scn")
