@@ -80,7 +80,8 @@ func _process(delta):
 				time = 0
 		else:
 			var adversary = global_obj.get_adversary()
-			print(str("Adversary: ", adversary))
+			if(adversary != null):
+				print(str("Adversary: ", adversary))
 			if(connect_status == "Finding Match"):
 				# remanda em caso de perda
 				if(time > 5):
