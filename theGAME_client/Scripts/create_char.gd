@@ -223,6 +223,8 @@ func _on_RestartButton_pressed():
 	Int = 0
 	Luk = 0
 	job = null
+	selected_skills.clear()
+	button_skills.clear()
 	self.get_node("ConfirmPanel/PlayerSkills/SkillList").clear()
 	self.get_node("ConfirmPanel/PlayerSkills/SkillList").push_align(2)
 	self.reset_skill_buttons()
