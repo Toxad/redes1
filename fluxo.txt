@@ -1,0 +1,21 @@
+Servidor: S
+Peer: A
+Peer: B
+------------
+fluxo:
+A -> S [code: 4, playerName, "Connection Request"]
+S -> A [code: 4, "Ok"]
+...
+B -> S [code: 4, playerName, "Connection Request"]
+S -> B [code: 4, "Ok"]
+...
+B -> S [code: 8, playerName, "Find Match"]
+...
+A -> S [code: 8, playerName, "Find Match"]
+S -> A [code: 8, p1_name, p1_ip, p2_name, p2_ip]
+S -> B [code: 8, p1_name, p1_ip, p2_name, p2_ip]
+A -> B [code: 16, "Match Found", class]
+B -> A [code: 16, "Match Found", class]
+Se A ou B receber um Match Found ele inicia a batalha e manda:
+A/B -> S [code:16, playerName, "Synchronized"]
+Existe um Keep alive para que, se A/B não tiver sincronizado ele sai do jogo
