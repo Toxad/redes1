@@ -1,4 +1,3 @@
-
 extends Sprite
 
 # numero de vezes que a conexão tentou com o servidor
@@ -12,6 +11,9 @@ var time = 0
 
 # global object
 var global_obj
+
+# mudar de cena
+var change_scene = false
 
 func _ready():
 	global_obj = self.get_parent().get_node("/root/globalNode")
@@ -39,31 +41,38 @@ func require_server():
 
 # função que irá tentar conectar ao servidor um numero maximo de vezes (3) e, caso não conseguir, fechará o jogo
 func _process(delta):
-	#if(already_started):
-	#	time = time + delta
-	#	if(time > 5):
-	#		if(tries < 30):
-	#			tries = tries + 1
-	#			time = 0
-	#			already_started = false
-	#		else:
-	#			self.stop("It was not possible to connect")
-	#	else:
-	#		if(global_obj.listening()):
-	#			var recev = global_obj.receive_packet()
-	#			if(recev == null):
-	#				return
-	#			if(recev and recev == 15):
-	#				self.stop("Connected")
-	#			else:
-	#				print("ERROR: Bad ACK: ", recev)
-	#		else:
-	#			self.stop("A Problem occured")
-	#else:
-	#	#already_started = true
-	#	global_obj.send(10)
-	self.stop("Connected")
-	global_obj.changeScene("res://Scenes/menu_scene.scn")
+	if(already_started and (not change_scene)):
+		time = time + delta
+		if(time > 5):
+			if(tries < 5):
+				tries = tries + 1
+				time = 0
+				already_started = false
+			else:
+				self.stop("It was not possible to connect")
+				self.set_process(false)
+		else:
+			if(global_obj.listening()):
+				var recev = global_obj.receive_packet()
+				if(recev == null):
+					return
+				if(recev and recev == 4):
+					stop("Connected")
+					change_scene = true
+					time = 0
+				else:
+					print("ERROR: Bad ACK: ", recev)
+			else:
+				self.stop("A Problem occured")
+				self.set_process(false)
+	elif(change_scene):
+		time = time + delta
+		print(time)
+		if(time > 2):
+			global_obj.changeScene("res://Scenes/menu_scene.scn")
+	else:
+		already_started = true
+		global_obj.send(4, "Connection Request")
 
 func update_label():
 	var text = self.get_node("Label").get_text()
@@ -77,7 +86,6 @@ func _on_Timer_timeout():
 
 func stop(text):
 	self.get_node("Label/Timer").stop()
-	self.set_process(false)
 	self.get_node("Label").set_text(text)
 
 func _on_Button_pressed():

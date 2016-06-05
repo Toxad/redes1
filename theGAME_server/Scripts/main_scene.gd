@@ -31,7 +31,8 @@ func _process(delta):
 				username = recev[1]
 				var obj = [username, address]
 				users.append(obj)
-				update_list()
+				peers_numb = peers_numb + 1
+				update()
 			# confirmação de que chegou mensagem de match
 			elif(recev[0] == 16):
 				print_packet(recev)
@@ -57,7 +58,8 @@ func _process(delta):
 		print("Listening now...")
 		global_obj.start_connection()
 
-func update_list():
+func update():
+	get_node("PeersNumber").set_text(str(peers_numb))
 	list.clear()
 	for user in users:
 		list.add_text(str("\n", user[0]), "\t", user[1])
