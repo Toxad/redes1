@@ -13,8 +13,7 @@ func start_connection():
 	var err = udp.listen(listen_port)
 
 func pack_ip():
-	var got_ip = udp.get_packet_ip()
-	return got_ip
+	return udp.get_packet_ip()
 
 func close_connection():
 	udp.close()
@@ -30,3 +29,11 @@ func send(msg, addr):
 	if (udp.is_listening()):
 		udp.set_send_address(addr, remote_port)
 		udp.put_var(msg)
+
+func send_match(msg, addr, adv):
+	if(udp.is_listening()):
+		udp.set_send_address(addr, remote_port)
+		udp.put_var(msg, adv[0], adv[1])
+	pass
+
+# send(8, user_b[1], user_a)
