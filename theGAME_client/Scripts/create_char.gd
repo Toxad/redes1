@@ -40,20 +40,19 @@ func dir_skills(path):
 			
 func _ready():
 	global_obj = self.get_parent().get_node("/root/globalNode")
-	#self.set_process(true)
 	self.get_node("ConfirmPanel/ConfirmContainer/PlayerName/Content").set_text(global_obj.get_player_name())		#Nome obtido do player
-	self.get_node("SkillsPanel/Control/Skill1").set_toggle_mode(true)							#Habilita botoes
+	self.get_node("SkillsPanel/Control/Skill1").set_toggle_mode(true)												#Habilita botoes
 	self.get_node("SkillsPanel/Control/Skill2").set_toggle_mode(true)
 	self.get_node("SkillsPanel/Control/Skill3").set_toggle_mode(true)
 	self.get_node("SkillsPanel/Control/Skill4").set_toggle_mode(true)
-	self.get_node("ConfirmPanel/ConfirmContainer/PlayerSkills/SkillList").push_align(2)							#Align Right
+	self.get_node("ConfirmPanel/ConfirmContainer/PlayerSkills/SkillList").push_align(2)								#Align Right
 
 	
 func _process(delta):
 	time = time + delta
 	if(self.connect_status == ""):
-		
-		print("Started finding a match")
+		self.get_node("ConfirmPanel/ConfirmConnect/Dialogue").set_text("Started finding a match")
+		#print("Started finding a match")
 		self.connect_status = "Finding Match"
 		global_obj.send(8, "Find Match")
 		time = 0
@@ -62,12 +61,14 @@ func _process(delta):
 		if(packet != null):
 			if(packet[0] == 0):
 				# erro
-				print(str("erro: ",packet[1]))
+				self.get_node("ConfirmPanel/ConfirmConnect/Dialogue").set_text(str("erro: ",packet[1]))
+				#print(str("erro: ",packet[1]))
 				self.set_process(false)
 			elif(packet[0] == 8):
 				# recebeu de servidor; adversario no pacote; send para adversario
 				self.connect_status = "Found Match"
-				print(self.connect_status)
+				self.get_node("ConfirmPanel/ConfirmConnect/Dialogue").set_text(self.connect_status)
+				#print(self.connect_status)
 				global_obj.set_adversary(packet[3], packet[4])
 				time = 0
 			elif(packet[0] == 16):
@@ -76,7 +77,8 @@ func _process(delta):
 				if(global_obj.get_adversary == null):
 					var ip = global_obj.pack_ip()
 					global_obj.set_adversary(packet[1], ip)
-				print(self.connect_status)
+				#print(self.connect_status)
+				self.get_node("ConfirmPanel/ConfirmConnect/Dialogue").set_text(self.connect_status)
 				time = 0
 		else:
 			var adversary = global_obj.get_adversary()
@@ -85,7 +87,8 @@ func _process(delta):
 			if(connect_status == "Finding Match"):
 				# remanda em caso de perda
 				if(time > 5):
-					print("Re: Finding Match")
+					self.get_node("ConfirmPanel/ConfirmConnect/Dialogue").set_text("Re: Finding Match")
+					#print("Re: Finding Match")
 					global_obj.send(8, "Find Match")
 					time = 0
 			elif(connect_status == "Found Match"):
@@ -234,7 +237,6 @@ func _on_SkillsBackButton_pressed():
 	changePanel("AttributesPanel")
 
 func _on_Skill1_mouse_enter():
-	
 	pass # replace with function body
 
 	
@@ -318,6 +320,7 @@ func reset_skill_buttons():
 
 func _on_ConfirmButton_pressed():
 	self.get_node("ConfirmPanel/ConfirmContainer").hide()
+	self.get_node("ConfirmPanel/ConfirmConnect").show()
 	var all_skills = []
 	for key in (selected_skills).keys():
 		all_skills.append(selected_skills[key])
@@ -325,3 +328,12 @@ func _on_ConfirmButton_pressed():
 	self.set_process(true)
 
 
+
+
+func _on_CancelButton_pressed():
+	self.connect_status = ""
+	self.get_node("ConfirmPanel/ConfirmConnect").hide()
+	self.get_node("ConfirmPanel/ConfirmContainer").show()
+	
+
+	
