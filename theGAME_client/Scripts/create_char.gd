@@ -4,7 +4,7 @@ var currentPanel = null
 var job = null
 var global_obj
 var selected_skills = {}
-var available_skills = {}
+#var available_skills = {}
 var MAX_SKILLS = 4
 var SKILL_PATH = "res://Scripts/Skills/"
 
@@ -26,7 +26,7 @@ func dir_skills(path):
 			if(file_name != "." and file_name != ".."):		#ignora arquivos "falsos" retornados pela função
 				file_name = file_name.split(".", false)		#separa nome do arquivo de sua extensão
 				var skill = self.get_parent().get_node("/root/"+file_name[0])
-				available_skills[skill.get_name()] = skill	#coloca skill no dicionario de skills disponiveis
+				#available_skills[skill.get_name()] = skill	#coloca skill no dicionario de skills disponiveis
 				button_skills.append(skill)					#atribui skill a botão na ordem
 				self.get_node("SkillsPanel/Control/Skill"+str(i)+"/Sprite").set_texture(load(skill.get_icon()))
 				file_name = dir.get_next()
@@ -108,7 +108,12 @@ func _on_AttBackButton_pressed():
 	Agi = 0
 	Int = 0
 	Luk = 0
+	selected_skills.clear()
+	button_skills.clear()
+	#available_skills.clear()
+	self.reset_skill_buttons()
 	changePanel("ClassPanel")
+	
 
 func _on_StrPlus_pressed():
 	if(sum < 15 and Str < 10):
@@ -164,11 +169,11 @@ func _on_SkillsBackButton_pressed():
 	
 	
 func _on_Skill1_toggled(pressed):
-	if(pressed):
+	if(pressed):																	#botão toggles, adiciona skill do botão correspondente no dicionario 
 		self.get_node("SkillsPanel/Control/Skill1/Sprite").set_self_opacity(0.5)
 		selected_skills[button_skills[0].get_name()] = button_skills[0] 
 	else:
-		self.get_node("SkillsPanel/Control/Skill1/Sprite").set_self_opacity(1)
+		self.get_node("SkillsPanel/Control/Skill1/Sprite").set_self_opacity(1)		#retira do dicionario
 		selected_skills.erase(button_skills[0].get_name())
 		
 func _on_Skill2_toggled(pressed):
@@ -196,7 +201,7 @@ func _on_Skill4_toggled(pressed):
 		selected_skills.erase(button_skills[3].get_name())
 		
 func _on_SkillsNextButton_pressed():
-	for key in (selected_skills).keys():
+	for key in (selected_skills).keys():											#coloca skill selecionadas na relação da proxima tela
 		self.get_node("ConfirmPanel/PlayerSkills/SkillList").add_text(key+"\n")
 	changePanel("ConfirmPanel")
 
@@ -224,7 +229,7 @@ func _on_RestartButton_pressed():
 	changePanel("ClassPanel")
 
 func reset_skill_buttons():
-	available_skills.clear()
+	#available_skills.clear()
 	self.get_node("SkillsPanel/Control/Skill1/Sprite").set_texture(null)
 	self.get_node("SkillsPanel/Control/Skill1/Sprite").set_self_opacity(1)
 	self.get_node("SkillsPanel/Control/Skill1").set_pressed(false)
