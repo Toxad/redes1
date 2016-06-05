@@ -17,12 +17,14 @@ var debuffs_arr = []
 func _ready():
 	pass
 
-func _init(name, attributes, skills, job):
+func _init():
+	pass
+
+func set_player(name, attributes, skills, job):
 	self.name = name
 	self.attributes_dict["str"] = attributes[0]
 	self.attributes_dict["agi"] = attributes[1]
 	self.attributes_dict["int"] = attributes[2]
-	#self.attributes_dict["luk"] = 
 	var val = 0
 	for i in range(attributes[3]):
 		if(val == 0):

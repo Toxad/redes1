@@ -1,15 +1,13 @@
 extends Node
 
 var udp = PacketPeerUDP.new()
-
 const listen_port = 1512
-
 const remote_host = "localhost"
-
 const remote_port = 1412
-
 var playerName = ""
-
+var adversary_name = ""
+var adversary_address = ""
+var hero = null
 var currentScene = null
 
 func set_player_name(name):
@@ -53,13 +51,29 @@ func send(code, msg):
 		udp.put_var(packet)
 
 # mensagem para o outro jogador quando você JA recebeu um pacote do servidor e espera a confirmação do outro
-func send_match(code, player, adv):
+func send_match(code, adv):
 	if(udp.is_listening()):
-		udp.set_send_address(player[1], listen_port)
-		var packet = [code, player[0], player[1], adv[0], adv[1]]
+		udp.set_send_address(adv[1], listen_port)
+		var packet = [code, playerName]
 
 func send_battle(code, target, damage, status, type):
 	pass
 
 func keep_alive(code, status):
 	pass
+
+func set_adversary(name, address):
+	self.adversary_name = name
+	self.adversary_address = address
+
+func get_adversary():
+	if(self.adversary_name == ""):
+		return null
+	return [self.adversary_name, self.adversary_address]
+
+func set_player(attributes, skills, job):
+	self.hero = player.set_player(playerName, attributes, skills, job)
+	pass
+
+func pack_ip():
+	return udp.get_packet_ip()

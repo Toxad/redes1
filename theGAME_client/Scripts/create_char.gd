@@ -5,8 +5,10 @@ var job = null
 var global_obj
 var selected_skills = {}
 #var available_skills = {}
+var connect_status = ""
+var time = 0
 var MAX_SKILLS = 4
-var SKILL_PATH = "res://Scripts/Skills/"
+const SKILL_PATH = "res://Scripts/Skills/"
 
 var button_skills = []
 
@@ -38,7 +40,7 @@ func dir_skills(path):
 			
 func _ready():
 	global_obj = self.get_parent().get_node("/root/globalNode")
-	self.set_process(true)
+	#self.set_process(true)
 	print(global_obj.get_player_name())
 	self.get_node("ConfirmPanel/PlayerName/Content").set_text(global_obj.get_player_name())		#Nome obtido do player
 	self.get_node("SkillsPanel/Control/Skill1").set_toggle_mode(true)							#Habilita botoes
@@ -49,12 +51,53 @@ func _ready():
 
 	
 func _process(delta):
-	self.get_node("AttributesPanel/StrNode/StrValue").set_text(str(Str))
-	self.get_node("AttributesPanel/AgiNode/AgiValue").set_text(str(Agi))
-	self.get_node("AttributesPanel/IntNode/IntValue").set_text(str(Int))
-	self.get_node("AttributesPanel/LukNode/LukValue").set_text(str(Luk))
-	self.get_node("AttributesPanel/AttPoints").set_text(str(15-sum))
-	sum = Str+Agi+Int+Luk
+	time = time + delta
+	if(self.connect_status == ""):
+		print("Started finding a match")
+		self.connect_status = "Finding Match"
+		global_obj.send(8, "Find Match")
+		time = 0
+	else:
+		var packet = global_obj.receive_packet()
+		if(packet != null):
+			if(packet[0] == 0):
+				# erro
+				print(str("erro: ",packet[1]))
+				self.set_process(false)
+			elif(packet[0] == 8):
+				# recebeu de servidor; adversario no pacote; send para adversario
+				self.connect_status = "Found Match"
+				print(self.connect_status)
+				global_obj.set_adversary(packet[3], packet[4])
+				time = 0
+				
+			elif(packet[0] == 16):
+				# recebeu de adversario; adversario no pacote; send para adversario
+				self.connect_status = "Ready"
+				if(global_obj.get_adversary == null):
+					var ip = global_obj.pack_ip()
+					global_obj.set_adversary(packet[1], ip)
+				print(self.connect_status)
+				time = 0
+		else:
+			var adversary = global_obj.get_adversary()
+			if(connect_status == "Finding Match"):
+				# remanda em caso de perda
+				if(time > 5):
+					print("Re: Finding Match")
+					global_obj.send(8, "Find Match")
+					time = 0
+			elif(connect_status == "Found Match"):
+				if(time > 1):
+					global_obj.send_match(16, adversary)
+					time = 0
+			elif(connect_status == "Ready"):
+				if(time > 1):
+					global_obj.send_match(16, adversary)
+					print("Fim! Muda de cena")
+					global_obj.changeScene("res://Scenes/battle_scene.scn")
+					self.set_process(false)
+					time = 0
 
 ################################   JOB
 
@@ -68,31 +111,37 @@ func _on_BerserkerButton_pressed():
 	job = "Berserker"
 	self.get_node("ConfirmPanel/PlayerClass/Content").set_text(job)
 	changePanel("AttributesPanel")
+	update_stats()
 
 func _on_HunterButton_pressed():
 	job = "Hunter"
 	self.get_node("ConfirmPanel/PlayerClass/Content").set_text(job)
 	changePanel("AttributesPanel")
+	update_stats()
 
 func _on_KnightButton_pressed():
 	job = "Knight"
 	self.get_node("ConfirmPanel/PlayerClass/Content").set_text(job)
 	changePanel("AttributesPanel")
+	update_stats()
 
 func _on_MageButton_pressed():
 	job = "Mage"
 	self.get_node("ConfirmPanel/PlayerClass/Content").set_text(job)
 	changePanel("AttributesPanel")
+	update_stats()
 
 func _on_NecromancerButton_pressed():
 	job = "Necromancer"
 	self.get_node("ConfirmPanel/PlayerClass/Content").set_text(job)
 	changePanel("AttributesPanel")
+	update_stats()
 
 func _on_RogueButton_pressed():
 	job = "Rogue"
 	self.get_node("ConfirmPanel/PlayerClass/Content").set_text(job)
 	changePanel("AttributesPanel")
+	update_stats()
 
 ################################   STATS
 
@@ -101,6 +150,14 @@ var Int = 0
 var Agi = 0
 var Luk = 0
 var sum = Str+Agi+Int+Luk
+
+func update_stats():
+	self.get_node("AttributesPanel/StrNode/StrValue").set_text(str(Str))
+	self.get_node("AttributesPanel/AgiNode/AgiValue").set_text(str(Agi))
+	self.get_node("AttributesPanel/IntNode/IntValue").set_text(str(Int))
+	self.get_node("AttributesPanel/LukNode/LukValue").set_text(str(Luk))
+	sum = Str+Agi+Int+Luk
+	self.get_node("AttributesPanel/AttPoints").set_text(str(15-sum))
 
 func _on_AttBackButton_pressed():
 	job = null
@@ -118,34 +175,42 @@ func _on_AttBackButton_pressed():
 func _on_StrPlus_pressed():
 	if(sum < 15 and Str < 10):
 		Str += 1
+	update_stats()
 
 func _on_StrMinus_pressed():
 	if(sum > 0 and Str > 0):
 		Str -= 1
+	update_stats()
 
 func _on_AgiPlus_pressed():
 	if(sum < 15 and Agi < 10):
 		Agi += 1
+	update_stats()
 
 func _on_AgiMinus_pressed():
 	if(sum > 0 and Agi > 0):
 		Agi -= 1
+	update_stats()
 
 func _on_IntPlus_pressed():
 	if(sum < 15 and Int < 10):
 		Int += 1
+	update_stats()
 
 func _on_IntMinus_pressed():
 	if(sum > 0 and Int > 0):
 		Int -= 1
+	update_stats()
 
 func _on_LukPlus_pressed():
 	if(sum < 15 and Luk < 10):
 		Luk += 1
+	update_stats()
 
 func _on_LukMinus_pressed():
 	if(sum > 0 and Luk > 0):
 		Luk -= 1
+	update_stats()
 
 func _on_AttNextButton_pressed():
 	self.get_node("ConfirmPanel/PlayerAttributes/Content").set_text("STR: "+str(Str)+"\nAGI: "+str(Agi)+"\nINT: "+str(Int)+"\nLUK: "+str(Luk))
@@ -244,3 +309,11 @@ func reset_skill_buttons():
 	self.get_node("SkillsPanel/Control/Skill4/Sprite").set_texture(null)
 	self.get_node("SkillsPanel/Control/Skill4/Sprite").set_self_opacity(1)
 	self.get_node("SkillsPanel/Control/Skill4").set_pressed(false)
+
+
+func _on_ConfirmButton_pressed():
+	var all_skills = []
+	for key in (selected_skills).keys():
+		all_skills.append(selected_skills[key])
+	global_obj.set_player([Str, Agi, Int, Luk], all_skills, self.job)
+	self.set_process(true)

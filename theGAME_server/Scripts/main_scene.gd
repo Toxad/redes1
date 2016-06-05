@@ -24,23 +24,30 @@ func _process(delta):
 			# reconhecimento que o servidor esta ativo
 			if(recev[0] == 4):
 				print_packet(recev)
-				global_obj.send(4, address)
+				global_obj.send(4, address, "Ok")
 			# finding match
 			elif(recev[0] == 8):
 				print_packet(recev)
 				username = recev[1]
-				var obj = [username, address]
-				users.append(obj)
-				peers_numb = peers_numb + 1
-				update()
+				var unique = true
+				for user in users:
+					if(username == user[0] and address == user[1]):
+						unique = false
+					if(username == user[0]):
+						send(0, address, "Duplicated name")
+				if(unique):
+					var obj = [username, address]
+					users.append(obj)
+					peers_numb = peers_numb + 1
+					update()
 			# confirmação de que chegou mensagem de match; retira da lista os 2 se o que enviou estiver no topo
 			elif(recev[0] == 16):
 				print_packet(recev)
 				var user_a = users[0]
 				var user_b = users[1]
 				if(address == user_a[1] or address == user_b[1]):
-					send(16, user_a[1])
-					send(16, user_b[1])
+					send(16, user_a[1], "Ok")
+					send(16, user_b[1], "Ok")
 					users.remove(0)
 					users.remove(1)
 					update_list()
