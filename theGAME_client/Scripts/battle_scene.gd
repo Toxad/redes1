@@ -34,6 +34,7 @@ func _process(delta):
 				keep_alive = 0
 			# pacote de dano
 			elif(packet[0] == 64):
+				self.unlock()
 				self.emulate_battle(packet)
 			# vitoria!
 			elif(packet[0] == 128):
@@ -134,21 +135,21 @@ func _on_FleeButton_mouse_enter():
 
 func _on_AttackButton_pressed():
 	send_attack()
-	pass # replace with function body
+	lock()
 
 func _on_SkillsButton_pressed():
 	show_skills()
+	lock()
 
 func _on_DefendButton_pressed():
 	send_defend()
-	pass # replace with function body
+	lock()
 
 func _on_ItemsButton_pressed():
-	pass # replace with function body
+	pass
 
 func _on_FleeButton_pressed():
 	send_forfeit()
-	pass # replace with function body
 
 ############################### MENU SKILLS
 
@@ -242,12 +243,16 @@ func use_skill(skill_index):
 	var target_skill = null
 	var target = ""
 	var index = 1
+	print("Size de skills: " + str(global_obj.get_player().get_skills().size()) + "; index: " + str(skill_index))
 	for skill in global_obj.get_player().get_skills():
 		if(index == skill_index):
 			target_skill = skill
-	if(isinstance(target_skill, offensive_skills)):
+	if(target_skill == null):
+		return
+	print(target_skill)
+	if(target_skill extends offensive_skills):
 		global_obj.send_battle(64, adv[0], target_skill.get_damage(), target_skill.get_name(), target_skill.get_damage_type())
-	elif(isinstance(target_skill, buff_skills)):
+	elif(target_skill extends buff_skills):
 		target_skill.call(global_obj.get_player())
 		global_obj.send_battle(64, global_obj.get_player_name(), 0, target_skill.get_name(), "buff")
 
@@ -292,8 +297,8 @@ func victory():
 	self.get_node("AdversarySprite").hide()
 
 func send_attack():
-	var dmg = global_obj.get_player().get_phys_atk()*3
-	send_battle(64, adv[0], dmg, "attack", "physical")	
+	var dmg = global_obj.get_player().get_phys_attack()*3
+	global_obj.send_battle(64, adv[0], dmg, "attack", "physical")
 	pass
 
 func send_defend():
@@ -301,9 +306,27 @@ func send_defend():
 	var buff = ("res://Scripts/Status/defend.gd")
 	buff.set_status(hero, 1)
 	hero.add_buff(buff)
-	send_battle(64, hero.get_name(), 0, "defend", "defend")	
+	global_obj.send_battle(64, hero.get_name(), 0, "defend", "defend")	
 
 func send_forfeit():
 	global_obj.send_match(128, adv)
 	global_obj.changeScene("res://Scenes/menu_scene.scn")
+	pass
+
+func unlock():
+	self.get_node("DialoguePanel/VBoxContainer/AttackButton").set_disabled(false)
+	self.get_node("DialoguePanel/VBoxContainer/DefendButton").set_disabled(false)
+	self.get_node("DialoguePanel/VBoxContainer/FleeButton").set_disabled(false)
+	self.get_node("DialoguePanel/VBoxContainer/ItemsButton").set_disabled(false)
+	self.get_node("DialoguePanel/VBoxContainer/SkillsButton").set_disabled(false)
+	self.get_node("DialoguePanel/VBoxContainer/AttackButton").grab_focus()
+	pass
+
+func lock():
+	self.get_node("DialoguePanel/SkillsPanel").hide()
+	self.get_node("DialoguePanel/VBoxContainer/AttackButton").set_disabled(true)
+	self.get_node("DialoguePanel/VBoxContainer/DefendButton").set_disabled(true)
+	self.get_node("DialoguePanel/VBoxContainer/FleeButton").set_disabled(true)
+	self.get_node("DialoguePanel/VBoxContainer/ItemsButton").set_disabled(true)
+	self.get_node("DialoguePanel/VBoxContainer/SkillsButton").set_disabled(true)
 	pass
