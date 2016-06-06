@@ -256,8 +256,7 @@ func use_skill(skill_index):
 		global_obj.send_battle(64, global_obj.get_player_name(), 0, target_skill.get_name(), "buff")
 
 func emulate_battle(packet):
-	# checa o tipo, se for um tipo que precisa ser usado, usa aqui
-	if(packet[4] == "buff" or packet[4] == "defend"):
+	if(packet[4] == "buff" or packet[4] == "defend"):				# checa o tipo, se for um tipo que precisa ser usado, usa aqui
 		return
 	else:
 		var hero = global_obj.get_player()
@@ -266,11 +265,11 @@ func emulate_battle(packet):
 		else:
 			var skill = evaluate_skills(packet[3], adv.get_job())	# pega qual skill com base no nome packet[3]
 			if(packet[4] == "physical"):
-				skill.call(packet[2],packet[1])					#seta dano físico
-				hero.take_phys_dmg(skill.damage)					#calculo de dano
+				skill.call(packet[2],hero)						#seta dano físico
+				hero.take_phys_dmg(skill.get_damage())				#calculo de dano
 			elif(packet[3] == "magical"):
-				skill.call(packet[2],packet[1])					#seta dano magico
-				hero.take_magic_dmg(skill.damage)					#calculo de dano
+				skill.call(packet[2],packet[1])						#seta dano magico
+				hero.take_magic_dmg(skill.get_damage())				#calculo de dano
 			pass
 			
 func evaluate_skills(name, job):
@@ -296,7 +295,7 @@ func victory():
 	self.get_node("AdversarySprite").hide()
 
 func send_attack():
-	var dmg = global_obj.get_player().get_phys_atk()*3
+	var dmg = global_obj.get_player().get_phys_atk()
 	send_battle(64, adv[0], dmg, "attack", "physical")	
 	pass
 
