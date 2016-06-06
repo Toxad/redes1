@@ -1,5 +1,7 @@
 extends "res://Scripts/Skills/buff_skills.gd"
 
+var buff
+
 func _init():
 	self.set_jobs(["Berserker"])
 	self.set_name("Frenzy")
@@ -8,9 +10,9 @@ func _init():
 	self.set_info("Gain 4 STR points for 4 turns at the cost of 20 HP per turn.")
 
 func call(player):
-	frenzy = ("res://Scripts/Status/frenzy_buff.gd")
-	frenzy.set_status(player, 4)
-	player.add_buff(frenzy)
+	buff = ("res://Scripts/Status/frenzy_buff.gd")
+	buff.set_status(player, 4)
+	player.add_buff(buff)
 	pass
 
 func _ready():

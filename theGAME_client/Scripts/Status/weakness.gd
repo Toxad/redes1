@@ -1,16 +1,14 @@
-extends status
+extends "res://Scripts/status.gd"
 
-func _ready():
-	pass
-
-func _init(player, turns).(player, turns):
-	pass
+var original_str
 
 func begin():
-	self.get_target().set_strength(self.get_target().get_strength() - 2)
+	original_str = self.get_target().get_strength()
+	self.get_target().set_strength(self.get_target().get_strength() - 1)
 
 func step():
+	self.get_target().set_strength(self.get_target().get_strength() - 1)
 	pass
 
 func end():
-	self.get_target().set_strength(self.get_target().get_strength() + 2)
+	self.get_target().set_strength(original_str)

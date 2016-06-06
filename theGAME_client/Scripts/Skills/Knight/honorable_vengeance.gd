@@ -7,6 +7,7 @@ func _init():
 	self.set_damage_type("physical")
 	self.set_mana_cost(70)
 	self.set_icon("res://Images/Honor_Strike.tex")
+	self.set_info("HONORABLE VENGEANCE\nChannel your sense of duty into your blade. Deals 130% physical damage at the cost of 70 mana")
 	
 func call(player):
 	var dmg = 1.3*(player.get_phys_atk())

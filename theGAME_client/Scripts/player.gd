@@ -155,6 +155,7 @@ func get_dodge():
 		val = val - 3
 	return total
 
+	
 func pass_turn_status():
 	var to_remove = []
 	# passa um turno dos buffs

@@ -1,16 +1,10 @@
 extends "res://Scripts/status.gd"
 
-var original_str
-
-func _ready():
-	pass
-
 func begin():
-	original_str = self.target.get_strength()
-	self.target.set_strength(original_str+4)
+	self.get_target().set_strength(self.get_target().get_strength() + 4)
 
 func step():
-	self.target.set_life(self.target.get_life()-20)
+	self.get_target().set_life(self.target.get_life()-15)
 
 func end():
-	self.target.set_strength(original_str)
+	self.get_target().set_strength(self.get_target().get_strength() - 4)
