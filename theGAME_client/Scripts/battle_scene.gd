@@ -30,7 +30,7 @@ func _process(delta):
 		if(packet != null):
 			# keep alive
 			if(packet[0] == 32):
-				first_packet = true
+				first_packet = false
 				keep_alive = 0
 			# pacote de dano
 			elif(packet[0] == 64):
@@ -245,9 +245,9 @@ func use_skill(skill_index):
 	for skill in global_obj.get_player().get_skills():
 		if(index == skill_index):
 			target_skill = skill
-	if(target_skill extends offensive_skills):
+	if(isinstance(target_skill, offensive_skills)):
 		global_obj.send_battle(64, adv[0], target_skill.get_damage(), target_skill.get_name(), target_skill.get_damage_type())
-	elif(target_skill extends buff_skills):
+	elif(isinstance(target_skill, buff_skills)):
 		target_skill.call(global_obj.get_player())
 		global_obj.send_battle(64, global_obj.get_player_name(), 0, target_skill.get_name(), "buff")
 

@@ -74,7 +74,7 @@ func get_adversary():
 
 func set_player(attributes, skills, job):
 	self.hero = get_node("/root/player")
-	self.hero = player.set_player(playerName, attributes, skills, job)
+	hero.set_player(playerName, attributes, skills, job)
 
 func get_player():
 	return self.hero
