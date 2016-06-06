@@ -236,10 +236,6 @@ func _on_ReturnButton_pressed():
 	global_obj.changeScene("res://Scenes/menu_scene.scn")
 	pass # replace with function body
 
-# MECANICA
-
-# send_battle(code, target, damage, skill_name, type)
-
 func update_info():
 	var hero = global_obj.get_player()
 	if(hero != null):
@@ -284,7 +280,5 @@ func send_defend():
 
 func send_forfeit():
 	global_obj.send_match(128, adv)
+	global_obj.changeScene("res://Scenes/menu_scene.scn")
 	pass
-
-func _on_ConfirmationDialog_confirmed():
-	global_obj.send_match(128, adv)
