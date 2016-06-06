@@ -58,6 +58,26 @@ func _process(delta):
 		time = 0
 	else:
 		var packet = global_obj.receive_packet()
+		var adversary = global_obj.get_adversary()
+		if(connect_status == "Finding Match"):
+			# remanda em caso de perda
+			if(time > 5):
+				self.get_node("ConfirmPanel/ConfirmConnect/Dialogue").set_text("Re: Finding Match")
+				#print("Re: Finding Match")
+				global_obj.send(8, "Find Match")
+				time = 0
+		elif(connect_status == "Found Match"):
+			if(time > 1):
+				global_obj.send_match(16, adversary)
+				time = 0
+		elif(connect_status == "Ready"):
+			if(time > 1):
+				print("Mandou um 16 para o adversario")
+				global_obj.send_match(16, adversary)
+				print("Fim! Muda de cena")
+				global_obj.changeScene("res://Scenes/battle_scene.scn")
+				self.set_process(false)
+				time = 0
 		if(packet != null):
 			if(packet[0] == 0):
 				# erro
@@ -81,27 +101,6 @@ func _process(delta):
 				#print(self.connect_status)
 				self.get_node("ConfirmPanel/ConfirmConnect/Dialogue").set_text(self.connect_status)
 				time = 0
-		else:
-			var adversary = global_obj.get_adversary()
-			if(connect_status == "Finding Match"):
-				# remanda em caso de perda
-				if(time > 5):
-					self.get_node("ConfirmPanel/ConfirmConnect/Dialogue").set_text("Re: Finding Match")
-					#print("Re: Finding Match")
-					global_obj.send(8, "Find Match")
-					time = 0
-			elif(connect_status == "Found Match"):
-				if(time > 1):
-					global_obj.send_match(16, adversary)
-					time = 0
-			elif(connect_status == "Ready"):
-				if(time > 1):
-					print("Mandou um 16 para o adversario")
-					global_obj.send_match(16, adversary)
-					print("Fim! Muda de cena")
-					global_obj.changeScene("res://Scenes/battle_scene.scn")
-					self.set_process(false)
-					time = 0
 
 ################################   JOB
 

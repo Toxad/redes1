@@ -16,9 +16,9 @@ func _ready():
 	self.adv = global_obj.get_adversary()
 	self.get_node("VictoryLabel").hide()
 	self.get_node("ReturnButton").hide()
-	update_info()
 
 func _process(delta):
+	update_info()
 	time = time + delta
 	keep_alive = keep_alive + delta
 	# send keep alive
@@ -46,11 +46,6 @@ func _process(delta):
 				# vitoria!
 				else:
 					self.victory()
-		pass
-	
-	# trata os pacotes chegados
-	
-	pass
 
 func _input(event):
 	if(event.type == InputEvent.KEY):
