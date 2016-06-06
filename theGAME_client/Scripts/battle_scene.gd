@@ -22,10 +22,10 @@ func _process(delta):
 	time = time + delta
 	keep_alive = keep_alive + delta
 	# send keep alive
-	if(time > 3):
-		global_obj.send_match(32, adv)
-		time = 0
 	if(global_obj.listening()):
+		if(time > 3):
+			global_obj.send_match(32, adv)
+			time = 0
 		var packet = global_obj.receive_packet()
 		if(packet != null):
 			# keep alive
@@ -41,7 +41,7 @@ func _process(delta):
 			if(keep_alive > 15):
 				# não conseguiu entrar na batalha
 				if(first_packet):
-					global_obj.send_match(16, global_obj.get_adversary())
+					global_obj.send_match(16, adv)
 				# vitoria!
 				else:
 					self.victory()
@@ -238,17 +238,29 @@ func _on_ReturnButton_pressed():
 
 # MECANICA
 
-# send_battle(code, target, damage, status, type)
+# send_battle(code, target, damage, skill_name, type)
 
 func update_info():
 	var hero = global_obj.get_player()
 	if(hero != null):
 		self.get_node("DialoguePanel/InfoPanel/HPNumberLabel").set_text(str(hero.get_life(), "/", hero.get_max_life()))
+		self.get_node("DialoguePanel/InfoPanel/ManaNumberLabel").set_text(str(hero.get_mana(), "/", hero.get_max_mana()))
 
 func use_skill(skill_index):
-	pass
+	var target_skill = null
+	var target = ""
+	var index = 1
+	for skill in global_obj.get_player().get_skills():
+		if(index == skill_index):
+			target_skill = skill
+	if(target_skill extends offensive_skills):
+		global_obj.send_battle(64, adv[0], target_skill.get_damage(), target_skill.get_name(), target_skill.get_damage_type())
+	elif(target_skill extends buff_skills):
+		target_skill.call(global_obj.get_player())
+		global_obj.send_battle(64, global_obj.get_player_name(), 0, target_skill.get_name(), "buff")
 
 func emulate_battle(packet):
+	# checa o tipo, se for um tipo que precisa ser usado, usa aqui
 	pass
 
 func victory():
@@ -257,7 +269,6 @@ func victory():
 	self.get_node("VictoryLabel").show()
 	self.get_node("ReturnButton").show()
 	self.get_node("AdversarySprite").hide()
-	pass
 
 func send_attack():
 	var dmg = global_obj.get_player().get_phys_atk()*3

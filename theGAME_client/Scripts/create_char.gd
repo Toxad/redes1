@@ -64,7 +64,7 @@ func _process(delta):
 				self.get_node("ConfirmPanel/ConfirmConnect/Dialogue").set_text(str("erro: ",packet[1]))
 				#print(str("erro: ",packet[1]))
 				self.set_process(false)
-			elif(packet[0] == 8):
+			elif(packet[0] == 8 and self.connect_status != "Ready"):
 				# recebeu de servidor; adversario no pacote; send para adversario
 				self.connect_status = "Found Match"
 				self.get_node("ConfirmPanel/ConfirmConnect/Dialogue").set_text(self.connect_status)

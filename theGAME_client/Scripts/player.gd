@@ -2,6 +2,7 @@ extends Node
 
 var life = 0
 var max_life = 0
+var max_mana = 0
 var mana = 0
 var name = ""
 var magic_def = 0
@@ -42,6 +43,8 @@ func set_player(name, attributes, skills, job):
 	self.life = 500
 	self.mana = 250
 	self.job = job
+	self.max_life = self.life
+	self.max_mana = self.mana
 
 func get_skills():
 	return self.skills_arr
@@ -60,9 +63,9 @@ func set_magic_def(val):
 
 func use_skill(target, index):
 	var skill = skills_arr[index]
-	if(isinstance(skill, offensive_skills)):
+	if(skill extends offensive_skills):
 		skill.call(self, target)
-	if(isinstance(skill, buff_skills)):
+	if(skill extends buff_skills):
 		skill.call(self)
 
 func attack(target):
@@ -85,6 +88,12 @@ func get_life():
 
 func set_life(life):
 	self.life = life
+
+func get_max_life():
+	return self.max_life
+
+func get_max_mana():
+	return self.max_mana
 
 func get_mana():
 	return self.mana
