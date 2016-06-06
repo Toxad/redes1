@@ -58,10 +58,10 @@ func send_match(code, adv):
 		udp.put_var(packet)
 
 func send_battle(code, target, damage, status, type):
-	pass
-
-func keep_alive(code, status):
-	pass
+	if(udp.is_listening()):
+		udp.set_send_address(self.adversary_address, listen_port)
+		var packet = [code, target, damage, status, type]
+		udp.put_var(packet)
 
 func set_adversary(name, address):
 	self.adversary_name = name
@@ -73,8 +73,12 @@ func get_adversary():
 	return [self.adversary_name, self.adversary_address]
 
 func set_player(attributes, skills, job):
-	self.hero = player.set_player(playerName, attributes, skills, job)
-	pass
+	player.set_player(playerName, attributes, skills, job)
+	self.hero = get_node("/root/player")
+#	self.hero = player.set_player(playerName, attributes, skills, job)
+
+func get_player():
+	return self.hero
 
 func pack_ip():
 	return udp.get_packet_ip()
