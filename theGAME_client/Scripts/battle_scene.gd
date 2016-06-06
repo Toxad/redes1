@@ -51,6 +51,7 @@ func _process(delta):
 				else:
 					self.victory()
 
+
 func _input(event):
 	if(event.type == InputEvent.KEY):
 		if(event.scancode == KEY_LEFT):
@@ -253,19 +254,29 @@ func use_skill(skill_index):
 		return
 	print(target_skill)
 	if(target_skill.get_ext() == "offensive_skills"):
+		target_skill
+		print(str("Enviando ", 64, adv[0], target_skill.get_damage(), target_skill.get_name(), target_skill.get_damage_type(), global_obj.get_player().get_job()))
 		global_obj.send_battle(64, adv[0], target_skill.get_damage(), target_skill.get_name(), target_skill.get_damage_type(), global_obj.get_player().get_job())
 	elif(target_skill.get_ext() == "buff_skills"):
+		print("usou call nele")
 		target_skill.call(global_obj.get_player())
+		print(str("Enviando ", 64, global_obj.get_player_name(), 0, target_skill.get_name(), "buff", global_obj.get_player().get_job()))
 		global_obj.send_battle(64, global_obj.get_player_name(), 0, target_skill.get_name(), "buff", global_obj.get_player().get_job())
+	else:
+		print("skill não definida?")
+		global_obj.send_battle(64, hero.get_name(), 0, "defend", "defend", global_obj.get_player().get_job())
 
 func emulate_battle(packet):
+	print(packet)
 	if(packet[4] == "buff" or packet[4] == "defend"):				# checa o tipo, se for um tipo que precisa ser usado, usa aqui
 		return
 	else:
 		var hero = global_obj.get_player()
 		if(packet[3] == "attack"):
+			print("tipo ataque")
 			hero.take_phys_damage(packet[2])						# toma dano fisico
 		else:
+			print("tipo skill")
 			var skill = evaluate_skills(packet[3], packet[5])	# pega qual skill com base no nome packet[3]
 			if(packet[4] == "physical"):
 				skill.call(packet[2],hero)						#seta dano físico

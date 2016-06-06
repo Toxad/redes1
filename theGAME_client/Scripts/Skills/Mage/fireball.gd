@@ -9,9 +9,8 @@ func _init():
 	self.set_icon("res://Images/Fireball.tex")
 	self.set_info("FIREBALL\nA simple spell any self-respecting Mage should know. 120% magic damage at the cost of 70 mana")
 	
-func call(dmg, target):
-	self.set_damage(dmg)
+func call(target):
+	pass
 
-func get_dmg(player):
-	var dmg = 1.2*(player.get_magic_atk())
-	return dmg
+func set_damage(player):
+	self.damage = 1.2*(player.get_magic_attack())
