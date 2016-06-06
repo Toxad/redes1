@@ -16,9 +16,9 @@ func _ready():
 	self.adv = global_obj.get_adversary()
 	self.get_node("VictoryLabel").hide()
 	self.get_node("ReturnButton").hide()
-	update_info()
 
 func _process(delta):
+	update_info()
 	time = time + delta
 	keep_alive = keep_alive + delta
 	# send keep alive
@@ -30,6 +30,7 @@ func _process(delta):
 		if(packet != null):
 			# keep alive
 			if(packet[0] == 32):
+				first_packet = false
 				keep_alive = 0
 			# pacote de dano
 			elif(packet[0] == 64):
@@ -45,11 +46,6 @@ func _process(delta):
 				# vitoria!
 				else:
 					self.victory()
-		pass
-	
-	# trata os pacotes chegados
-	
-	pass
 
 func _input(event):
 	if(event.type == InputEvent.KEY):
@@ -249,9 +245,9 @@ func use_skill(skill_index):
 	for skill in global_obj.get_player().get_skills():
 		if(index == skill_index):
 			target_skill = skill
-	if(target_skill extends offensive_skills):
+	if(isinstance(target_skill, offensive_skills)):
 		global_obj.send_battle(64, adv[0], target_skill.get_damage(), target_skill.get_name(), target_skill.get_damage_type())
-	elif(target_skill extends buff_skills):
+	elif(isinstance(target_skill, buff_skills)):
 		target_skill.call(global_obj.get_player())
 		global_obj.send_battle(64, global_obj.get_player_name(), 0, target_skill.get_name(), "buff")
 
@@ -272,7 +268,7 @@ func emulate_battle(packet):
 				hero.take_magic_dmg(skill.get_damage())				#calculo de dano
 			pass
 			
-func evaluate_skills(name, job):
+func z(name, job):
 	var dir = Directory.new()
 	if (dir.open("res://Scripts/Skills/"+job+"/") == OK):
 		dir.list_dir_begin()
