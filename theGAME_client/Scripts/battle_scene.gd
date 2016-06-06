@@ -276,7 +276,7 @@ func emulate_battle(packet):
 				hero.take_magic_dmg(skill.get_damage())				#calculo de dano
 			pass
 			
-func z(name, job):
+func evaluate_skills(name, job):
 	var dir = Directory.new()
 	if (dir.open("res://Scripts/Skills/"+job+"/") == OK):
 		dir.list_dir_begin()
