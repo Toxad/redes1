@@ -264,7 +264,7 @@ func emulate_battle(packet):
 				skill.call(packet[2],hero)						#seta dano físico
 				hero.take_phys_dmg(skill.get_damage())				#calculo de dano
 			elif(packet[3] == "magical"):
-				skill.call(packet[2],packet[1])						#seta dano magico
+				skill.call(packet[2],hero)						#seta dano magico
 				hero.take_magic_dmg(skill.get_damage())				#calculo de dano
 			pass
 			
