@@ -257,7 +257,18 @@ func use_skill(skill_index):
 
 func emulate_battle(packet):
 	# checa o tipo, se for um tipo que precisa ser usado, usa aqui
-	pass
+	if(packet[4] == "buff" or packet[4] == "defend"):
+		return
+	else:
+		var hero = global_obj.get_player()
+		if(packet[3] == "attack"):
+			# toma dano fisico
+			hero.take_phys_damage(packet[2])
+		else:
+			# pega qual skill com base no nome packet[3]
+			# cheque o type (packet[4]): se for phys -> take_phys_damage(packet[2]), se não take_magic_damage(packet[2])
+			# use call da skill no adversario (no caso, no player)
+			pass
 
 func victory():
 	self.set_process(false)
