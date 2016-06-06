@@ -3,6 +3,9 @@ extends "skills.gd"
 var damage_type
 var damage
 
+func _init():
+	self.set_ext = "offensive_skills"
+
 func set_damage_type(type):
 	self.damage_type = type
 

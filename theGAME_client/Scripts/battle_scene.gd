@@ -253,9 +253,9 @@ func use_skill(skill_index):
 	if(target_skill == null):
 		return
 	print(target_skill)
-	if(target_skill extends offensive_skills):
+	if(target_skill.get_ext() == "offensive_skills"):
 		global_obj.send_battle(64, adv[0], target_skill.get_damage(), target_skill.get_name(), target_skill.get_damage_type())
-	elif(target_skill extends buff_skills):
+	elif(target_skill.get_ext() == "buff_skills"):
 		target_skill.call(global_obj.get_player())
 		global_obj.send_battle(64, global_obj.get_player_name(), 0, target_skill.get_name(), "buff")
 

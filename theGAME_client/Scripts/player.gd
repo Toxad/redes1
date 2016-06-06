@@ -64,16 +64,6 @@ func get_magic_def():
 func set_magic_def(val):
 	self.magic_def = val
 
-func use_skill(target, index):
-	var skill = skills_arr[index]
-	if(skill extends offensive_skills):
-		skill.call(self, target)
-	if(skill extends buff_skills):
-		skill.call(self)
-
-func attack(target):
-	target.take_damage()
-
 func take_phys_damage(dmg):
 	var total = 0
 	if(dmg > self.phys_def):

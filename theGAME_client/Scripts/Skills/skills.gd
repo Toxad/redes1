@@ -7,6 +7,13 @@ var icon
 var mana_cost = 0
 var hp_cost = 0
 var info
+var ext = ""
+
+func set_ext(ext):
+	self.ext = ext
+
+func get_ext():
+	return self.ext
 
 func set_name(name):
 	self.name = name
