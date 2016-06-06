@@ -7,7 +7,7 @@ func _init():
 	self.set_damage_type("physical")
 	self.set_mana_cost(125)
 	self.set_icon("res://Images/Double_Attack.tex")
-	self.set_info("DOUBLE ATTACK\nStrikes the enemy twice before they can react. Deals 200% physical damage for 150 mana")
+	self.set_info("DOUBLE ATTACK\nStrikes the enemy twice before they can react. Deals 200% physical damage for 125 mana")
 	
 func call(player):
 	var dmg = 2*(player.get_phys_atk())

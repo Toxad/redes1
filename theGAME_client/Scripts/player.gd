@@ -46,6 +46,18 @@ func set_player(name, attributes, skills, job):
 func get_skills():
 	return self.skills_arr
 
+func set_phys_def(val):
+	self.phys_def = val
+
+func get_phys_def():
+	return self.phys_def
+
+func get_magic_def():
+	return self.magic_def
+
+func set_magic_def(val):
+	self.magic_def = val
+
 func use_skill(target, index):
 	var skill = skills_arr[index]
 	if(isinstance(skill, offensive_skills)):

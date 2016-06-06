@@ -260,12 +260,20 @@ func victory():
 	pass
 
 func send_attack():
+	var dmg = global_obj.get_player().get_phys_atk()*3
+	send_battle(64, adv[0], dmg, "attack", "physical")	
 	pass
 
 func send_defend():
-	pass
+	var hero = global_obj.get_player()
+	var buff = ("res://Scripts/Status/defend.gd")
+	buff.set_status(hero, 1)
+	hero.add_buff(buff)
+	send_battle(64, hero.get_name(), 0, "defend", "defend")	
 
 func send_forfeit():
+	global_obj.send_match(128, adv)
 	pass
 
-
+func _on_ConfirmationDialog_confirmed():
+	global_obj.send_match(128, adv)
