@@ -262,12 +262,15 @@ func emulate_battle(packet):
 	else:
 		var hero = global_obj.get_player()
 		if(packet[3] == "attack"):
-			# toma dano fisico
-			hero.take_phys_damage(packet[2])
+			hero.take_phys_damage(packet[2])						# toma dano fisico
 		else:
-			var skill = evaluate_skills(packet[3], adv.get_job()) # pega qual skill com base no nome packet[3]
-			# cheque o type (packet[4]): se for phys -> take_phys_damage(packet[2]), se não take_magic_damage(packet[2])
-			# use call da skill no adversario (no caso, no player)
+			var skill = evaluate_skills(packet[3], adv.get_job())	# pega qual skill com base no nome packet[3]
+			if(packet[4] == "physical"):
+				skill.call(packet[2],packet[1])					#seta dano físico
+				hero.take_phys_dmg(skill.damage)					#calculo de dano
+			elif(packet[3] == "magical"):
+				skill.call(packet[2],packet[1])					#seta dano magico
+				hero.take_magic_dmg(skill.damage)					#calculo de dano
 			pass
 			
 func evaluate_skills(name, job):
