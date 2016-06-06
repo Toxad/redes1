@@ -37,10 +37,12 @@ func _process(delta):
 				keep_alive = 0
 			# pacote de dano
 			elif(packet[0] == 64):
+				keep_alive = 0
 				self.unlock()
 				self.emulate_battle(packet)
 			# vitoria!
 			elif(packet[0] == 128):
+				keep_alive = 0
 				self.victory()
 		else:
 			if(keep_alive > 15):
@@ -283,10 +285,10 @@ func emulate_battle(packet):
 			print(str("Evaluate skill: ", skill.get_name()))
 			if(packet[4] == "physical"):
 				skill.call(hero)						#seta dano físico
-				hero.take_phys_dmg(packet[2])				#calculo de dano
+				hero.take_phys_damage(packet[2])				#calculo de dano
 			elif(packet[3] == "magical"):
 				skill.call(hero)						#seta dano magico
-				hero.take_magic_dmg(packet[2])				#calculo de dano
+				hero.take_magic_damage(packet[2])				#calculo de dano
 			pass
 			
 func evaluate_skills(name, job):
