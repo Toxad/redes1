@@ -142,7 +142,6 @@ func _on_AttackButton_pressed():
 
 func _on_SkillsButton_pressed():
 	show_skills()
-	lock()
 
 func _on_DefendButton_pressed():
 	send_defend()
@@ -212,23 +211,23 @@ func _on_Skill5Button_mouse_enter():
 
 func _on_Skill1Button_pressed():
 	use_skill(1)
-	pass # replace with function body
+	lock()
 
 func _on_Skill2Button_pressed():
 	use_skill(2)
-	pass # replace with function body
+	lock()
 
 func _on_Skill3Button_pressed():
 	use_skill(3)
-	pass # replace with function body
+	lock()
 
 func _on_Skill4Button_pressed():
 	use_skill(4)
-	pass # replace with function body
+	lock()
 
 func _on_Skill5Button_pressed():
 	use_skill(5)
-	pass # replace with function body
+	lock()
 
 ##### Victory!
 
@@ -254,10 +253,10 @@ func use_skill(skill_index):
 		return
 	print(target_skill)
 	if(target_skill.get_ext() == "offensive_skills"):
-		global_obj.send_battle(64, adv[0], target_skill.get_damage(), target_skill.get_name(), target_skill.get_damage_type())
+		global_obj.send_battle(64, adv[0], target_skill.get_damage(), target_skill.get_name(), target_skill.get_damage_type(), global_obj.get_player().get_job())
 	elif(target_skill.get_ext() == "buff_skills"):
 		target_skill.call(global_obj.get_player())
-		global_obj.send_battle(64, global_obj.get_player_name(), 0, target_skill.get_name(), "buff")
+		global_obj.send_battle(64, global_obj.get_player_name(), 0, target_skill.get_name(), "buff", global_obj.get_player().get_job())
 
 func emulate_battle(packet):
 	if(packet[4] == "buff" or packet[4] == "defend"):				# checa o tipo, se for um tipo que precisa ser usado, usa aqui
@@ -267,7 +266,7 @@ func emulate_battle(packet):
 		if(packet[3] == "attack"):
 			hero.take_phys_damage(packet[2])						# toma dano fisico
 		else:
-			var skill = evaluate_skills(packet[3], adv.get_job())	# pega qual skill com base no nome packet[3]
+			var skill = evaluate_skills(packet[3], packet[5])	# pega qual skill com base no nome packet[3]
 			if(packet[4] == "physical"):
 				skill.call(packet[2],hero)						#seta dano físico
 				hero.take_phys_dmg(skill.get_damage())				#calculo de dano
@@ -300,7 +299,7 @@ func victory():
 
 func send_attack():
 	var dmg = global_obj.get_player().get_phys_attack()*3
-	global_obj.send_battle(64, adv[0], dmg, "attack", "physical")
+	global_obj.send_battle(64, adv[0], dmg, "attack", "physical", global_obj.get_player().get_job())
 	pass
 
 func send_defend():
@@ -308,7 +307,7 @@ func send_defend():
 	var buff = ("res://Scripts/Status/defend.gd")
 	buff.set_status(hero, 1)
 	hero.add_buff(buff)
-	global_obj.send_battle(64, hero.get_name(), 0, "defend", "defend")
+	global_obj.send_battle(64, hero.get_name(), 0, "defend", "defend", global_obj.get_player().get_job())
 
 func send_forfeit():
 	global_obj.send_match(128, adv)

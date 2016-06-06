@@ -57,10 +57,10 @@ func send_match(code, adv):
 		var packet = [code, playerName]
 		udp.put_var(packet)
 
-func send_battle(code, target, damage, status, type):
+func send_battle(code, target, damage, status, type, classe):
 	if(udp.is_listening()):
 		udp.set_send_address(self.adversary_address, listen_port)
-		var packet = [code, target, damage, status, type]
+		var packet = [code, target, damage, status, type, classe]
 		udp.put_var(packet)
 
 func set_adversary(name, address):
