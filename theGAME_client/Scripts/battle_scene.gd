@@ -27,6 +27,8 @@ func _process(delta):
 			global_obj.send_match(32, adv)
 			time = 0
 		var packet = global_obj.receive_packet()
+		if(global_obj.get_player().get_life() < 0):
+			lose()
 		if(packet != null):
 			# keep alive
 			if(packet[0] == 32):
@@ -306,7 +308,7 @@ func send_defend():
 	var buff = ("res://Scripts/Status/defend.gd")
 	buff.set_status(hero, 1)
 	hero.add_buff(buff)
-	global_obj.send_battle(64, hero.get_name(), 0, "defend", "defend")	
+	global_obj.send_battle(64, hero.get_name(), 0, "defend", "defend")
 
 func send_forfeit():
 	global_obj.send_match(128, adv)
@@ -330,3 +332,11 @@ func lock():
 	self.get_node("DialoguePanel/VBoxContainer/ItemsButton").set_disabled(true)
 	self.get_node("DialoguePanel/VBoxContainer/SkillsButton").set_disabled(true)
 	pass
+
+func lose():
+	self.set_process(false)
+	self.set_process_input(false)
+	self.get_node("VictoryLabel").show()
+	self.get_node("VictoryLabel").set_text("Lose!")
+	self.get_node("ReturnButton").show()
+	self.get_node("AdversarySprite").hide()
