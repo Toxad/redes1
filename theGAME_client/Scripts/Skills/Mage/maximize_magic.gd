@@ -7,7 +7,7 @@ func _init():
 	self.set_name("Maximize Magic")
 	self.set_mana_cost(50)
 	self.set_icon("res://Images/Maximize_Magic.tex")
-	self.set_info("Gain 3 STR points for 3 turns.\nCost: 50 mana")
+	self.set_info("MAXIMIZE MAGIC\nGain 3 STR points for 3 turns.\nCost: 50 mana")
 
 func call(player):
 	buff = ("res://Scripts/Status/maximize_magic.gd")
