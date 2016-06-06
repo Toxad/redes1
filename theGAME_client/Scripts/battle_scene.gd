@@ -250,11 +250,13 @@ func use_skill(skill_index):
 	for skill in global_obj.get_player().get_skills():
 		if(index == skill_index):
 			target_skill = skill
+		else:
+			index = index + 1
 	if(target_skill == null):
 		return
 	print(target_skill)
 	if(target_skill.get_ext() == "offensive_skills"):
-		target_skill
+		target_skill.set_damage(global_obj.get_player())
 		print(str("Enviando ", 64, adv[0], target_skill.get_damage(), target_skill.get_name(), target_skill.get_damage_type(), global_obj.get_player().get_job()))
 		global_obj.send_battle(64, adv[0], target_skill.get_damage(), target_skill.get_name(), target_skill.get_damage_type(), global_obj.get_player().get_job())
 	elif(target_skill.get_ext() == "buff_skills"):
@@ -264,7 +266,7 @@ func use_skill(skill_index):
 		global_obj.send_battle(64, global_obj.get_player_name(), 0, target_skill.get_name(), "buff", global_obj.get_player().get_job())
 	else:
 		print("skill não definida?")
-		global_obj.send_battle(64, hero.get_name(), 0, "defend", "defend", global_obj.get_player().get_job())
+		global_obj.send_battle(64, global_obj.get_player_name(), 0, "defend", "defend", global_obj.get_player().get_job())
 
 func emulate_battle(packet):
 	print(packet)
