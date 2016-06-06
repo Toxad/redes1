@@ -27,7 +27,8 @@ func _process(delta):
 			global_obj.send_match(32, adv)
 			time = 0
 		var packet = global_obj.receive_packet()
-		if(global_obj.get_player().get_life() < 0):
+		if(global_obj.get_player().get_life() <= 0):
+			global_obj.send_match(128, adv)
 			lose()
 		if(packet != null):
 			# keep alive
@@ -338,4 +339,4 @@ func lose():
 	self.get_node("VictoryLabel").show()
 	self.get_node("VictoryLabel").set_text("Lose!")
 	self.get_node("ReturnButton").show()
-	self.get_node("AdversarySprite").hide()
+	self.get_node("PlayerSprite").hide()
