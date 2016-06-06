@@ -1,16 +1,13 @@
-extends status
+extends "res://Scripts/status.gd"
 
-func _ready():
-	pass
-
-func _init(player, turns).(player, turns):
-	pass
+var buff
 
 func begin():
-	self.get_target().set_life(self.get_target().get_life() - 5)
+	self.get_target().set_life(self.get_target().get_life() - 15)
 
 func step():
-	self.get_target().set_life(self.get_target().get_life() - 5)
+	self.get_target().set_life(self.get_target().get_life() - 15)
 
 func end():
+	self.get_target().set_life(self.get_target().get_life() - 15)
 	pass
