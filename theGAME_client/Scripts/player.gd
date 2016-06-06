@@ -81,6 +81,7 @@ func take_phys_damage(dmg):
 	self.life = self.life - total
 	if(self.life < 0):
 		self.life = 0
+	print("life: " + str(self.life) + "; damage: " + str(dmg))
 
 func take_magic_damage(dmg):
 	var total = 0
