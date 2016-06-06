@@ -9,9 +9,9 @@ func _init():
 	self.set_icon("res://Images/Frenzy.tex")
 	self.set_info("FRENZY\nGain 4 STR points for 4 turns at the cost of 20 HP per turn.")
 
-func call(player):
+func call(target):
 	buff = ("res://Scripts/Status/frenzy_buff.gd")
-	buff.set_status(player, 4)
+	buff.set_status(target, 4)
 	player.add_buff(buff)
 	pass
 

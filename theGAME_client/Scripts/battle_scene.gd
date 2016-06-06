@@ -72,6 +72,25 @@ func show_skills():
 	self.get_node("DialoguePanel/VBoxContainer/FleeButton").set_disabled(true)
 	self.get_node("DialoguePanel/VBoxContainer/ItemsButton").set_disabled(true)
 	self.get_node("DialoguePanel/VBoxContainer/SkillsButton").set_disabled(true)
+	var skills = global_obj.get_player().get_skills()
+	index = 0
+	for skill in skills:
+		index = index + 1
+		if(index == 1):
+			self.get_node("DialoguePanel/SkillsPanel/VBoxContainer1/Skill1Button").set_text(skill.get_name())
+			pass
+		elif(index == 2):
+			self.get_node("DialoguePanel/SkillsPanel/VBoxContainer1/Skill2Button").set_text(skill.get_name())
+			pass
+		elif(index == 3):
+			self.get_node("DialoguePanel/SkillsPanel/VBoxContainer1/Skill3Button").set_text(skill.get_name())
+			pass
+		elif(index == 4):
+			self.get_node("DialoguePanel/SkillsPanel/VBoxContainer1/Skill4Button").set_text(skill.get_name())
+			pass
+		elif(index == 5):
+			self.get_node("DialoguePanel/SkillsPanel/VBoxContainer1/Skill5Button").set_text(skill.get_name())
+			pass
 
 func hide_skills():
 	self.get_node("DialoguePanel/VBoxContainer/AttackButton").set_disabled(false)
@@ -213,24 +232,29 @@ func _on_Skill5Button_mouse_enter():
 # PRESSED BOTÃO
 
 func _on_Skill1Button_pressed():
-	use_skill(1)
-	lock()
+	if(global_obj.get_player().get_skills().size() > 0):
+		use_skill(1)
+		lock()
 
 func _on_Skill2Button_pressed():
-	use_skill(2)
-	lock()
+	if(global_obj.get_player().get_skills().size() > 1):
+		use_skill(2)
+		lock()
 
 func _on_Skill3Button_pressed():
-	use_skill(3)
-	lock()
+	if(global_obj.get_player().get_skills().size() > 2):
+		use_skill(3)
+		lock()
 
 func _on_Skill4Button_pressed():
-	use_skill(4)
-	lock()
+	if(global_obj.get_player().get_skills().size() > 3):
+		use_skill(4)
+		lock()
 
 func _on_Skill5Button_pressed():
-	use_skill(5)
-	lock()
+	if(global_obj.get_player().get_skills().size() > 4):
+		use_skill(5)
+		lock()
 
 ##### Victory!
 
@@ -286,7 +310,7 @@ func emulate_battle(packet):
 			if(packet[4] == "physical"):
 				skill.call(hero)						#seta dano físico
 				hero.take_phys_damage(packet[2])				#calculo de dano
-			elif(packet[3] == "magical"):
+			elif(packet[4] == "magical"):
 				skill.call(hero)						#seta dano magico
 				hero.take_magic_damage(packet[2])				#calculo de dano
 			pass
