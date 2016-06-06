@@ -253,6 +253,8 @@ func use_skill(skill_index):
 		else:
 			index = index + 1
 	if(target_skill == null):
+		print("skill não definida?")
+		global_obj.send_battle(64, global_obj.get_player_name(), 0, "defend", "defend", global_obj.get_player().get_job())
 		return
 	print(target_skill)
 	if(target_skill.get_ext() == "offensive_skills"):
@@ -264,13 +266,11 @@ func use_skill(skill_index):
 		target_skill.call(global_obj.get_player())
 		print(str("Enviando ", 64, global_obj.get_player_name(), 0, target_skill.get_name(), "buff", global_obj.get_player().get_job()))
 		global_obj.send_battle(64, global_obj.get_player_name(), 0, target_skill.get_name(), "buff", global_obj.get_player().get_job())
-	else:
-		print("skill não definida?")
-		global_obj.send_battle(64, global_obj.get_player_name(), 0, "defend", "defend", global_obj.get_player().get_job())
 
 func emulate_battle(packet):
 	print(packet)
 	if(packet[4] == "buff" or packet[4] == "defend"):				# checa o tipo, se for um tipo que precisa ser usado, usa aqui
+		print("tipo pass")
 		return
 	else:
 		var hero = global_obj.get_player()
@@ -280,12 +280,13 @@ func emulate_battle(packet):
 		else:
 			print("tipo skill")
 			var skill = evaluate_skills(packet[3], packet[5])	# pega qual skill com base no nome packet[3]
+			print(str("Evaluate skill: ", skill.get_name()))
 			if(packet[4] == "physical"):
-				skill.call(packet[2],hero)						#seta dano físico
-				hero.take_phys_dmg(skill.get_damage())				#calculo de dano
+				skill.call(hero)						#seta dano físico
+				hero.take_phys_dmg(packet[2])				#calculo de dano
 			elif(packet[3] == "magical"):
-				skill.call(packet[2],hero)						#seta dano magico
-				hero.take_magic_dmg(skill.get_damage())				#calculo de dano
+				skill.call(hero)						#seta dano magico
+				hero.take_magic_dmg(packet[2])				#calculo de dano
 			pass
 			
 func evaluate_skills(name, job):
