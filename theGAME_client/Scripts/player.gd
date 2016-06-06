@@ -21,6 +21,9 @@ func _ready():
 func _init():
 	pass
 
+func get_job():
+	return self.job
+	
 func set_player(name, attributes, skills, job):
 	self.name = name
 	self.attributes_dict["str"] = attributes[0]

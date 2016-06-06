@@ -265,10 +265,25 @@ func emulate_battle(packet):
 			# toma dano fisico
 			hero.take_phys_damage(packet[2])
 		else:
-			# pega qual skill com base no nome packet[3]
+			var skill = evaluate_skills(packet[3], adv.get_job()) # pega qual skill com base no nome packet[3]
 			# cheque o type (packet[4]): se for phys -> take_phys_damage(packet[2]), se não take_magic_damage(packet[2])
 			# use call da skill no adversario (no caso, no player)
 			pass
+			
+func evaluate_skills(name, job):
+	var dir = Directory.new()
+	if (dir.open("res://Scripts/Skills/"+job+"/") == OK):
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while (file_name != ""):							#percorre arquivos do diretório enquanto existem e na quantidade de skills disponíveis
+			if(file_name != "." and file_name != ".."):		#ignora arquivos "falsos" retornados pela função
+				file_name = file_name.split(".", false)		#separa nome do arquivo de sua extensão
+				var skill = self.get_parent().get_node("/root/"+file_name[0])
+				if (skill.get_name() == name):
+					return skill
+				file_name = dir.get_next()
+			else:
+				file_name = dir.get_next()
 
 func victory():
 	self.set_process(false)
