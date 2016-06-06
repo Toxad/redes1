@@ -72,16 +72,16 @@ func attack(target):
 	target.take_damage()
 
 func take_phys_damage(dmg):
-	var total = dmg - phys_def
+	var total = dmg - self.phys_def
 	if(total < 0):
 		total = 0
-	self.life = self.life - 0
+	self.life = self.life - total
 
 func take_magic_damage(dmg):
-	var total = dmg - magic_def
+	var total = dmg - self.magic_def
 	if(total < 0):
 		total = 0
-	self.life = self.life - 0
+	self.life = self.life - total
 
 func get_life():
 	return self.life
