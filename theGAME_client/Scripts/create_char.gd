@@ -297,7 +297,7 @@ func _on_SkillsNextButton_pressed():
 func _on_ConfirmBackButton_pressed():
 	selected_skills.clear()
 	self.reset_skill_buttons()
-	self.get_node("ConfirmPanel/PlayerSkills/SkillList").clear()
+	self.get_node("ConfirmPanel/ConfirmContainer/PlayerSkills/SkillList").clear()
 	self.get_node("ConfirmPanel/ConfirmContainer/PlayerSkills/SkillList").push_align(2)
 	var path = SKILL_PATH+job+"/"
 	dir_skills(path)
