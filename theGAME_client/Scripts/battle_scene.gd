@@ -30,6 +30,7 @@ func _process(delta):
 		if(packet != null):
 			# keep alive
 			if(packet[0] == 32):
+				first_packet = true
 				keep_alive = 0
 			# pacote de dano
 			elif(packet[0] == 64):
@@ -270,7 +271,7 @@ func emulate_battle(packet):
 			# use call da skill no adversario (no caso, no player)
 			pass
 			
-func evaluate_skills(name, job):
+func z(name, job):
 	var dir = Directory.new()
 	if (dir.open("res://Scripts/Skills/"+job+"/") == OK):
 		dir.list_dir_begin()
